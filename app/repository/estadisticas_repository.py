@@ -3,9 +3,13 @@ from app.data.database import get_connection
 
 class EstadisticasRepository:
 
-    # -------------------------------------------------
-    # GASTO TOTAL POR MES
-    # -------------------------------------------------
+    # =================================================
+    # GASTO
+    # =================================================
+
+    # -----------------------------
+    # GASTO TOTAL POR MES (AÑO)
+    # -----------------------------
     def gasto_por_mes(self, vehiculo_id, anio):
         """
         Devuelve:
@@ -15,7 +19,7 @@ class EstadisticasRepository:
         cur = con.cursor()
 
         cur.execute("""
-            SELECT 
+            SELECT
                 strftime('%m', fecha) AS mes,
                 SUM(precio_total) AS gasto
             FROM repostajes
@@ -29,19 +33,26 @@ class EstadisticasRepository:
         con.close()
         return datos
 
-    # -------------------------------------------------
-    # GASTO TOTAL POR MES (FILTRADO POR MES)
-    # -------------------------------------------------
-    def gasto_por_mes_y_anio(self, vehiculo_id, mes, anio):
+    # -----------------------------
+    # GASTO DIARIO (MES + AÑO)
+    # -----------------------------
+    def gasto_diario(self, vehiculo_id, mes, anio):
+        """
+        Devuelve:
+        [(fecha, gasto_diario), ...]
+        """
         con = get_connection()
         cur = con.cursor()
 
         cur.execute("""
-            SELECT fecha, precio_total
+            SELECT
+                fecha,
+                SUM(precio_total) AS gasto
             FROM repostajes
             WHERE vehiculo_id = ?
               AND strftime('%Y', fecha) = ?
               AND strftime('%m', fecha) = ?
+            GROUP BY fecha
             ORDER BY fecha
         """, (vehiculo_id, str(anio), f"{int(mes):02d}"))
 
@@ -49,18 +60,23 @@ class EstadisticasRepository:
         con.close()
         return datos
 
-    # -------------------------------------------------
-    # CONSUMO MEDIO POR MES
-    # -------------------------------------------------
+    # =================================================
+    # CONSUMO
+    # =================================================
+
+    # -----------------------------
+    # CONSUMO MEDIO POR MES (AÑO)
+    # -----------------------------
     def consumo_por_mes(self, vehiculo_id, anio):
         """
-        Devuelve consumo medio L/100km por mes
+        Devuelve consumo medio L/100km por mes:
+        [(mes, consumo), ...]
         """
         con = get_connection()
         cur = con.cursor()
 
         cur.execute("""
-            SELECT 
+            SELECT
                 strftime('%m', fecha) AS mes,
                 AVG(litros / (kilometros / 100.0)) AS consumo
             FROM repostajes
@@ -74,22 +90,26 @@ class EstadisticasRepository:
         con.close()
         return datos
 
-    # -------------------------------------------------
-    # CONSUMO DETALLADO POR MES
-    # -------------------------------------------------
-    def consumo_por_mes_y_anio(self, vehiculo_id, mes, anio):
+    # -----------------------------
+    # CONSUMO MEDIO DIARIO (MES + AÑO)
+    # -----------------------------
+    def consumo_diario(self, vehiculo_id, mes, anio):
+        """
+        Devuelve:
+        [(fecha, consumo_medio), ...]
+        """
         con = get_connection()
         cur = con.cursor()
 
         cur.execute("""
-            SELECT fecha,
-                   litros,
-                   kilometros,
-                   (litros / (kilometros / 100.0)) AS consumo
+            SELECT
+                fecha,
+                AVG(litros / (kilometros / 100.0)) AS consumo
             FROM repostajes
             WHERE vehiculo_id = ?
               AND strftime('%Y', fecha) = ?
               AND strftime('%m', fecha) = ?
+            GROUP BY fecha
             ORDER BY fecha
         """, (vehiculo_id, str(anio), f"{int(mes):02d}"))
 

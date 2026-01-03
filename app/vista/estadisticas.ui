@@ -6,15 +6,13 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>900</width>
-    <height>650</height>
+    <width>239</width>
+    <height>269</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Estadísticas</string>
   </property>
-
-  <!-- ================= ESTILOS ================= -->
   <property name="styleSheet">
    <string>
 QWidget {
@@ -43,7 +41,7 @@ QPushButton {
     border-radius: 10px;
     padding: 10px;
     font-weight: bold;
-    color: #000000;
+    color: #000;
 }
 
 QPushButton:hover {
@@ -58,50 +56,141 @@ QPushButton#btnVolver {
 
 QPushButton#btnVolver:hover {
     background-color: #ff5252;
-    color: #000000;
+    color: #000;
 }
 
-QFrame {
-    background-color: #1e1e1e;
-    border-radius: 12px;
-    padding: 10px;
+QGroupBox {
+    border: 2px solid #2e2e2e;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    padding: 0 6px;
+    color: #00c853;
 }
    </string>
   </property>
-
-  <!-- ================= LAYOUT PRINCIPAL ================= -->
   <layout class="QVBoxLayout">
-
-   <!-- TÍTULO -->
    <item>
     <widget class="QLabel" name="labelTitulo">
-     <property name="text">
-      <string>Estadísticas</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
      <property name="font">
       <font>
+       <family>Segoe UI</family>
        <pointsize>22</pointsize>
        <bold>true</bold>
       </font>
      </property>
+     <property name="text">
+      <string>Estadísticas</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
+     </property>
     </widget>
    </item>
-
-   <!-- FILTROS -->
    <item>
     <layout class="QHBoxLayout">
-
      <item>
-      <widget class="QComboBox" name="comboMes"/>
+      <widget class="QComboBox" name="comboMes">
+       <item>
+        <property name="text">
+         <string>Enero</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Febrero</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Marzo</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Abril</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Mayo</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Junio</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Julio</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Agosto</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Septiembre</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Octubre</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Noviembre</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Diciembre</string>
+        </property>
+       </item>
+      </widget>
      </item>
-
      <item>
-      <widget class="QComboBox" name="comboAnio"/>
+      <widget class="QComboBox" name="comboAnio">
+       <item>
+        <property name="text">
+         <string>2023</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>2024</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>2025</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>2026</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>2027</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>2028</string>
+        </property>
+       </item>
+      </widget>
      </item>
-
      <item>
       <widget class="QPushButton" name="btnFiltrar">
        <property name="text">
@@ -109,41 +198,42 @@ QFrame {
        </property>
       </widget>
      </item>
-
     </layout>
    </item>
-
-   <!-- GRÁFICA GASTO -->
    <item>
-    <widget class="QFrame">
-     <layout class="QVBoxLayout" name="layoutGasto">
-      <item>
-       <widget class="QLabel">
-        <property name="text">
-         <string>Gasto (€)</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+    <layout class="QHBoxLayout">
+     <item>
+      <widget class="QPushButton" name="btnExportCSV">
+       <property name="text">
+        <string>Exportar CSV</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnExportPDF">
+       <property name="text">
+        <string>Exportar PDF</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupGasto">
+     <property name="title">
+      <string>Gasto (€)</string>
+     </property>
+     <layout class="QVBoxLayout" name="layoutGasto"/>
     </widget>
    </item>
-
-   <!-- GRÁFICA CONSUMO -->
    <item>
-    <widget class="QFrame">
-     <layout class="QVBoxLayout" name="layoutConsumo">
-      <item>
-       <widget class="QLabel">
-        <property name="text">
-         <string>Consumo (L/100km)</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+    <widget class="QGroupBox" name="groupConsumo">
+     <property name="title">
+      <string>Consumo (L/100km)</string>
+     </property>
+     <layout class="QVBoxLayout" name="layoutConsumo"/>
     </widget>
    </item>
-
-   <!-- BOTÓN VOLVER -->
    <item>
     <widget class="QPushButton" name="btnVolver">
      <property name="text">
@@ -151,7 +241,6 @@ QFrame {
      </property>
     </widget>
    </item>
-
   </layout>
  </widget>
  <resources/>

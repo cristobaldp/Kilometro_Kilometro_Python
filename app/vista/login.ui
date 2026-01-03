@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LoginView</class>
+ <widget class="QWidget" name="LoginView">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>380</width>
+    <height>323</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Kilómetro a Kilómetro - Login</string>
+  </property>
+  <property name="styleSheet">
+   <string>
+    QWidget {
+        background-color: #1b1b1b;
+        color: #eaeaea;
+        font-family: Segoe UI;
+    }
+
+    QLabel#labelTitulo {
+        color: #00c853;
+    }
+
+    QLineEdit {
+        background-color: #2a2a2a;
+        border: 2px solid #3a3a3a;
+        border-radius: 6px;
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    QLineEdit:focus {
+        border: 2px solid #00c853;
+    }
+
+    QPushButton {
+        background-color: #00c853;
+        border-radius: 8px;
+        padding: 12px;
+        font-weight: bold;
+        color: #000000;
+    }
+
+    QPushButton:hover {
+        background-color: #00e676;
+    }
+
+    QPushButton#btnIrRegistro {
+        background-color: transparent;
+        color: #9e9e9e;
+        font-weight: normal;
+    }
+
+    QPushButton#btnIrRegistro:hover {
+        color: #00e676;
+        text-decoration: underline;
+    }
+   </string>
+  </property>
+  <layout class="QVBoxLayout">
+   <item>
+    <widget class="QLabel" name="labelTitulo">
+     <property name="font">
+      <font>
+       <family>Segoe UI</family>
+       <pointsize>18</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Kilómetro a Kilómetro</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLineEdit" name="inputUsername">
+     <property name="placeholderText">
+      <string>Usuario</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLineEdit" name="inputPassword">
+     <property name="echoMode">
+      <enum>QLineEdit::EchoMode::Password</enum>
+     </property>
+     <property name="placeholderText">
+      <string>Contraseña</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="labelMensaje">
+     <property name="visible">
+      <bool>false</bool>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="btnInicioSesion">
+     <property name="text">
+      <string>Iniciar sesión</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="btnIrRegistro">
+     <property name="text">
+      <string>Crear cuenta</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

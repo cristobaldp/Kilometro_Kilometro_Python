@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>AddVehiculoView</class>
+ <widget class="QWidget" name="AddVehiculoView">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>440</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Añadir vehículo</string>
+  </property>
+
+  <property name="styleSheet">
+   <string>
+QWidget {
+    background-color: #1b1b1b;
+    color: #eaeaea;
+    font-family: Segoe UI;
+}
+
+QLabel#labelTitulo {
+    color: #00c853;
+}
+
+QLineEdit, QComboBox, QSpinBox, QDoubleSpinBox {
+    background-color: #2a2a2a;
+    border: 2px solid #3a3a3a;
+    border-radius: 8px;
+    padding: 8px;
+    font-size: 14px;
+}
+
+QLineEdit:focus, QComboBox:focus, QSpinBox:focus, QDoubleSpinBox:focus {
+    border: 2px solid #00c853;
+}
+
+QPushButton {
+    background-color: #00c853;
+    border-radius: 10px;
+    padding: 10px;
+    font-weight: bold;
+    color: #000000;
+}
+
+QPushButton:hover {
+    background-color: #00e676;
+}
+
+QPushButton#btnCancelar {
+    background-color: #2a2a2a;
+    color: #eaeaea;
+    border: 2px solid #3a3a3a;
+}
+
+QLabel#labelMensaje {
+    color: #ff5252;
+}
+   </string>
+  </property>
+
+  <layout class="QVBoxLayout">
+
+   <item>
+    <widget class="QLabel" name="labelTitulo">
+     <property name="text">
+      <string>Añadir vehículo</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>20</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
+    </widget>
+   </item>
+
+   <item><widget class="QComboBox" name="comboTipo"/></item>
+   <item><widget class="QComboBox" name="comboMarca"/></item>
+   <item><widget class="QComboBox" name="comboModelo"/></item>
+
+   <item>
+    <widget class="QLineEdit" name="inputMatricula">
+     <property name="placeholderText">
+      <string>Matrícula</string>
+     </property>
+    </widget>
+   </item>
+
+   <item>
+    <widget class="QSpinBox" name="spinAnio">
+     <property name="minimum"><number>1950</number></property>
+     <property name="maximum"><number>2100</number></property>
+     <property name="value"><number>2020</number></property>
+    </widget>
+   </item>
+
+   <item>
+    <widget class="QComboBox" name="comboCombustible">
+     <item><property name="text"><string>Gasolina</string></property></item>
+     <item><property name="text"><string>Diésel</string></property></item>
+     <item><property name="text"><string>Híbrido</string></property></item>
+     <item><property name="text"><string>Eléctrico</string></property></item>
+    </widget>
+   </item>
+
+   <item>
+    <widget class="QDoubleSpinBox" name="spinConsumo">
+     <property name="decimals"><number>1</number></property>
+     <property name="maximum"><double>50.0</double></property>
+     <property name="suffix"><string> L/100km</string></property>
+    </widget>
+   </item>
+
+   <item>
+    <widget class="QLabel" name="labelMensaje">
+     <property name="alignment"><set>Qt::AlignCenter</set></property>
+     <property name="visible"><bool>false</bool></property>
+    </widget>
+   </item>
+
+   <item>
+    <layout class="QHBoxLayout">
+     <item>
+      <widget class="QPushButton" name="btnGuardar">
+       <property name="text"><string>Guardar</string></property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnCancelar">
+       <property name="text"><string>Cancelar</string></property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

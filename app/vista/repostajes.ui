@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>RepostajesView</class>
+ <widget class="QWidget" name="RepostajesView">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>900</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Repostajes</string>
+  </property>
+
+  <property name="styleSheet">
+   <string>
+QWidget {
+    background-color: #121212;
+    color: #eaeaea;
+    font-family: Segoe UI;
+}
+
+QLabel#labelTitulo {
+    color: #00c853;
+}
+
+QTableWidget {
+    background-color: #1e1e1e;
+    border: 2px solid #2e2e2e;
+    border-radius: 12px;
+}
+
+QHeaderView::section {
+    background-color: #2a2a2a;
+    padding: 8px;
+    font-weight: bold;
+}
+
+QTableWidget::item:selected {
+    background-color: #00c853;
+    color: #000000;
+}
+
+QPushButton {
+    background-color: #00c853;
+    border-radius: 10px;
+    padding: 10px 18px;
+    font-weight: bold;
+    color: #000000;
+}
+
+QPushButton:hover {
+    background-color: #00e676;
+}
+
+QPushButton#btnEliminar {
+    background-color: #2a1e1e;
+    border: 2px solid #ff5252;
+    color: #ff5252;
+}
+
+QPushButton#btnEliminar:hover {
+    background-color: #ff5252;
+    color: #000000;
+}
+   </string>
+  </property>
+
+  <layout class="QVBoxLayout">
+
+   <!-- TÍTULO -->
+   <item>
+    <widget class="QLabel" name="labelTitulo">
+     <property name="text">
+      <string>Repostajes</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>22</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
+    </widget>
+   </item>
+
+   <!-- TABLA -->
+   <item>
+    <widget class="QTableWidget" name="tablaRepostajes">
+     <property name="columnCount">
+      <number>5</number>
+     </property>
+     <column>
+      <property name="text">
+       <string>ID</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Fecha</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Litros</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Precio</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Kilómetros</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+
+   <!-- BOTONES -->
+   <item>
+    <layout class="QHBoxLayout">
+
+     <item>
+      <widget class="QPushButton" name="btnVolver">
+       <property name="text">
+        <string>Volver</string>
+       </property>
+      </widget>
+     </item>
+
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </spacer>
+     </item>
+
+     <item>
+      <widget class="QPushButton" name="btnExportCSV">
+       <property name="text">
+        <string>Exportar CSV</string>
+       </property>
+      </widget>
+     </item>
+
+     <item>
+      <widget class="QPushButton" name="btnExportPDF">
+       <property name="text">
+        <string>Exportar PDF</string>
+       </property>
+      </widget>
+     </item>
+
+     <item>
+      <widget class="QPushButton" name="btnEliminar">
+       <property name="text">
+        <string>Eliminar</string>
+       </property>
+      </widget>
+     </item>
+
+     <item>
+      <widget class="QPushButton" name="btnNuevo">
+       <property name="text">
+        <string>Nuevo repostaje</string>
+       </property>
+      </widget>
+     </item>
+
+    </layout>
+   </item>
+
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

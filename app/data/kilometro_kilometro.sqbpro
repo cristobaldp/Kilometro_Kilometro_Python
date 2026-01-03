@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="kilometro_kilometro.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="1"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="3270"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="repostajes" custom_title="0" dock_id="1" table="4,10:mainrepostajes"/><dock_state state="000000ff00000000fd0000000100000002000005f4000002aefc0100000001fb000000160064006f0063006b00420072006f00770073006500310100000000000005f40000012600ffffff000002580000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="repostajes" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="29"/><column index="2" value="74"/><column index="3" value="85"/><column index="4" value="39"/><column index="5" value="75"/><column index="6" value="67"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1*">-- 25 repostajes día 1
+INSERT INTO repostajes (vehiculo_id, fecha, litros, precio_total, kilometros)
+VALUES
+(1,'2024-01-01',12,18,200),
+(1,'2024-01-01',13,19,210),
+(1,'2024-01-01',11,17,220),
+(1,'2024-01-01',14,20,230),
+(1,'2024-01-01',15,21,240),
+(1,'2024-01-01',12,18,250),
+(1,'2024-01-01',13,19,260),
+(1,'2024-01-01',11,17,270),
+(1,'2024-01-01',14,20,280),
+(1,'2024-01-01',15,21,290),
+(1,'2024-01-01',12,18,300),
+(1,'2024-01-01',13,19,310),
+(1,'2024-01-01',11,17,320),
+(1,'2024-01-01',14,20,330),
+(1,'2024-01-01',15,21,340),
+(1,'2024-01-01',12,18,350),
+(1,'2024-01-01',13,19,360),
+(1,'2024-01-01',11,17,370),
+(1,'2024-01-01',14,20,380),
+(1,'2024-01-01',15,21,390),
+(1,'2024-01-01',12,18,400),
+(1,'2024-01-01',13,19,410),
+(1,'2024-01-01',11,17,420),
+(1,'2024-01-01',14,20,430),
+(1,'2024-01-01',15,21,440);
+
+-- 25 repostajes día 2
+INSERT INTO repostajes (vehiculo_id, fecha, litros, precio_total, kilometros)
+VALUES
+(1,'2024-01-02',12,18,500),
+(1,'2024-01-02',13,19,510),
+(1,'2024-01-02',11,17,520),
+(1,'2024-01-02',14,20,530),
+(1,'2024-01-02',15,21,540),
+(1,'2024-01-02',12,18,550),
+(1,'2024-01-02',13,19,560),
+(1,'2024-01-02',11,17,570),
+(1,'2024-01-02',14,20,580),
+(1,'2024-01-02',15,21,590),
+(1,'2024-01-02',12,18,600),
+(1,'2024-01-02',13,19,610),
+(1,'2024-01-02',11,17,620),
+(1,'2024-01-02',14,20,630),
+(1,'2024-01-02',15,21,640),
+(1,'2024-01-02',12,18,650),
+(1,'2024-01-02',13,19,660),
+(1,'2024-01-02',11,17,670),
+(1,'2024-01-02',14,20,680),
+(1,'2024-01-02',15,21,690),
+(1,'2024-01-02',12,18,700),
+(1,'2024-01-02',13,19,710),
+(1,'2024-01-02',11,17,720),
+(1,'2024-01-02',14,20,730),
+(1,'2024-01-02',15,21,740);
+</sql><current_tab id="0"/></tab_sql></sqlb_project>

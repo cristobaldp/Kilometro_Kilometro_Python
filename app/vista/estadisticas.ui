@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>EstadisticasView</class>
+ <widget class="QWidget" name="EstadisticasView">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>900</width>
+    <height>650</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Estadísticas</string>
+  </property>
+
+  <!-- ================= ESTILOS ================= -->
+  <property name="styleSheet">
+   <string>
+QWidget {
+    background-color: #121212;
+    color: #eaeaea;
+    font-family: Segoe UI;
+}
+
+QLabel#labelTitulo {
+    color: #00c853;
+}
+
+QComboBox {
+    background-color: #1e1e1e;
+    border: 2px solid #2e2e2e;
+    border-radius: 8px;
+    padding: 6px;
+}
+
+QComboBox:focus {
+    border: 2px solid #00c853;
+}
+
+QPushButton {
+    background-color: #00c853;
+    border-radius: 10px;
+    padding: 10px;
+    font-weight: bold;
+    color: #000000;
+}
+
+QPushButton:hover {
+    background-color: #00e676;
+}
+
+QPushButton#btnVolver {
+    background-color: #2a1e1e;
+    border: 2px solid #ff5252;
+    color: #ff5252;
+}
+
+QPushButton#btnVolver:hover {
+    background-color: #ff5252;
+    color: #000000;
+}
+
+QFrame {
+    background-color: #1e1e1e;
+    border-radius: 12px;
+    padding: 10px;
+}
+   </string>
+  </property>
+
+  <!-- ================= LAYOUT PRINCIPAL ================= -->
+  <layout class="QVBoxLayout">
+
+   <!-- TÍTULO -->
+   <item>
+    <widget class="QLabel" name="labelTitulo">
+     <property name="text">
+      <string>Estadísticas</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>22</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
+    </widget>
+   </item>
+
+   <!-- FILTROS -->
+   <item>
+    <layout class="QHBoxLayout">
+
+     <item>
+      <widget class="QComboBox" name="comboMes"/>
+     </item>
+
+     <item>
+      <widget class="QComboBox" name="comboAnio"/>
+     </item>
+
+     <item>
+      <widget class="QPushButton" name="btnFiltrar">
+       <property name="text">
+        <string>Filtrar</string>
+       </property>
+      </widget>
+     </item>
+
+    </layout>
+   </item>
+
+   <!-- GRÁFICA GASTO -->
+   <item>
+    <widget class="QFrame">
+     <layout class="QVBoxLayout" name="layoutGasto">
+      <item>
+       <widget class="QLabel">
+        <property name="text">
+         <string>Gasto (€)</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+
+   <!-- GRÁFICA CONSUMO -->
+   <item>
+    <widget class="QFrame">
+     <layout class="QVBoxLayout" name="layoutConsumo">
+      <item>
+       <widget class="QLabel">
+        <property name="text">
+         <string>Consumo (L/100km)</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+
+   <!-- BOTÓN VOLVER -->
+   <item>
+    <widget class="QPushButton" name="btnVolver">
+     <property name="text">
+      <string>Volver</string>
+     </property>
+    </widget>
+   </item>
+
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

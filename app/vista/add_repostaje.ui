@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>AddRepostajeView</class>
+ <widget class="QWidget" name="AddRepostajeView">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>420</width>
+    <height>420</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Añadir repostaje</string>
+  </property>
+
+  <property name="styleSheet">
+   <string>
+QWidget {
+    background-color: #121212;
+    color: #eaeaea;
+    font-family: Segoe UI;
+}
+
+QLabel#labelTitulo {
+    color: #00c853;
+}
+
+QDateEdit, QLineEdit {
+    background-color: #1e1e1e;
+    border: 2px solid #2e2e2e;
+    border-radius: 8px;
+    padding: 8px;
+    font-size: 14px;
+}
+
+QDateEdit::drop-down {
+    border: none;
+}
+
+QLineEdit:focus, QDateEdit:focus {
+    border: 2px solid #00c853;
+}
+
+QPushButton {
+    background-color: #00c853;
+    border-radius: 10px;
+    padding: 10px 18px;
+    font-weight: bold;
+    color: #000000;
+}
+
+QPushButton:hover {
+    background-color: #00e676;
+}
+
+QPushButton#btnCancel {
+    background-color: #2a1e1e;
+    border: 2px solid #ff5252;
+    color: #ff5252;
+}
+
+QPushButton#btnCancel:hover {
+    background-color: #ff5252;
+    color: #000000;
+}
+
+QLabel#labelMensaje {
+    color: #ff5252;
+    font-size: 12px;
+}
+   </string>
+  </property>
+
+  <layout class="QVBoxLayout">
+
+   <!-- TÍTULO -->
+   <item>
+    <widget class="QLabel" name="labelTitulo">
+     <property name="text">
+      <string>Añadir repostaje</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>20</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
+    </widget>
+   </item>
+
+   <!-- FECHA -->
+   <item>
+    <widget class="QDateEdit" name="inputFecha">
+     <property name="calendarPopup">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+
+   <!-- LITROS -->
+   <item>
+    <widget class="QLineEdit" name="inputLitros">
+     <property name="placeholderText">
+      <string>Litros</string>
+     </property>
+    </widget>
+   </item>
+
+   <!-- PRECIO -->
+   <item>
+    <widget class="QLineEdit" name="inputPrecio">
+     <property name="placeholderText">
+      <string>Precio total (€)</string>
+     </property>
+    </widget>
+   </item>
+
+   <!-- KILÓMETROS -->
+   <item>
+    <widget class="QLineEdit" name="inputKilometros">
+     <property name="placeholderText">
+      <string>Kilómetros</string>
+     </property>
+    </widget>
+   </item>
+
+   <!-- MENSAJE ERROR -->
+   <item>
+    <widget class="QLabel" name="labelMensaje">
+     <property name="visible">
+      <bool>false</bool>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+
+   <!-- BOTONES -->
+   <item>
+    <layout class="QHBoxLayout">
+
+     <item>
+      <widget class="QPushButton" name="btnSave">
+       <property name="text">
+        <string>Guardar</string>
+       </property>
+      </widget>
+     </item>
+
+     <item>
+      <widget class="QPushButton" name="btnCancel">
+       <property name="text">
+        <string>Cancelar</string>
+       </property>
+      </widget>
+     </item>
+
+    </layout>
+   </item>
+
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

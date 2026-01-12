@@ -7,8 +7,8 @@ from app.data.init_db import init_db
 
 def main():
     # 🔑 1. Inicializar base de datos (crear tablas si no existen)
+ 
     init_db()
-
     # 🔑 2. Arrancar aplicación Qt
     app = QApplication(sys.argv)
 

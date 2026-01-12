@@ -2,16 +2,20 @@ from app.data.database import get_connection
 
 
 class EstadisticasRepository:
+    """
+    Repositorio de estadísticas:
+    - Gasto
+    - Consumo
+    - Por mes / por día
+    """
 
     # =================================================
     # GASTO
     # =================================================
 
-    # -----------------------------
-    # GASTO TOTAL POR MES (AÑO)
-    # -----------------------------
     def gasto_por_mes(self, vehiculo_id, anio):
         """
+        Gasto total por mes de un año
         Devuelve:
         [(mes, gasto_total), ...]
         """
@@ -33,11 +37,9 @@ class EstadisticasRepository:
         con.close()
         return datos
 
-    # -----------------------------
-    # GASTO DIARIO (MES + AÑO)
-    # -----------------------------
     def gasto_diario(self, vehiculo_id, mes, anio):
         """
+        Gasto diario de un mes concreto
         Devuelve:
         [(fecha, gasto_diario), ...]
         """
@@ -64,12 +66,10 @@ class EstadisticasRepository:
     # CONSUMO
     # =================================================
 
-    # -----------------------------
-    # CONSUMO MEDIO POR MES (AÑO)
-    # -----------------------------
     def consumo_por_mes(self, vehiculo_id, anio):
         """
-        Devuelve consumo medio L/100km por mes:
+        Consumo medio mensual (L/100km)
+        Devuelve:
         [(mes, consumo), ...]
         """
         con = get_connection()
@@ -90,11 +90,9 @@ class EstadisticasRepository:
         con.close()
         return datos
 
-    # -----------------------------
-    # CONSUMO MEDIO DIARIO (MES + AÑO)
-    # -----------------------------
     def consumo_diario(self, vehiculo_id, mes, anio):
         """
+        Consumo medio diario de un mes concreto
         Devuelve:
         [(fecha, consumo_medio), ...]
         """

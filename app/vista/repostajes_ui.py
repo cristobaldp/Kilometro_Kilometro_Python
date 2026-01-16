@@ -15,9 +15,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QHBoxLayout, QHeaderView, QLabel,
-    QPushButton, QSizePolicy, QSpacerItem, QTableWidget,
-    QTableWidgetItem, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QAbstractItemView, QApplication, QHBoxLayout, QHeaderView,
+    QLabel, QPushButton, QSizePolicy, QSpacerItem,
+    QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget)
 
 class Ui_RepostajesView(object):
     def setupUi(self, RepostajesView):
@@ -28,11 +28,12 @@ class Ui_RepostajesView(object):
         self.vboxLayout.setObjectName(u"vboxLayout")
         self.labelTitulo = QLabel(RepostajesView)
         self.labelTitulo.setObjectName(u"labelTitulo")
-        self.labelTitulo.setAlignment(Qt.AlignCenter)
         font = QFont()
+        font.setFamilies([u"Segoe UI"])
         font.setPointSize(22)
         font.setBold(True)
         self.labelTitulo.setFont(font)
+        self.labelTitulo.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         self.vboxLayout.addWidget(self.labelTitulo)
 
@@ -50,6 +51,8 @@ class Ui_RepostajesView(object):
         __qtablewidgetitem4 = QTableWidgetItem()
         self.tablaRepostajes.setHorizontalHeaderItem(4, __qtablewidgetitem4)
         self.tablaRepostajes.setObjectName(u"tablaRepostajes")
+        self.tablaRepostajes.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
+        self.tablaRepostajes.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.tablaRepostajes.setColumnCount(5)
 
         self.vboxLayout.addWidget(self.tablaRepostajes)

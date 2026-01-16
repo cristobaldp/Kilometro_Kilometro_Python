@@ -15,30 +15,31 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QHBoxLayout, QHeaderView, QLabel,
-    QPushButton, QSizePolicy, QSpacerItem, QTableWidget,
-    QTableWidgetItem, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QAbstractItemView, QApplication, QHBoxLayout, QHeaderView,
+    QLabel, QPushButton, QSizePolicy, QSpacerItem,
+    QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget)
 
 class Ui_VehiculosView(object):
     def setupUi(self, VehiculosView):
         if not VehiculosView.objectName():
             VehiculosView.setObjectName(u"VehiculosView")
-        VehiculosView.resize(950, 580)
+        VehiculosView.resize(946, 572)
         self.vboxLayout = QVBoxLayout(VehiculosView)
         self.vboxLayout.setObjectName(u"vboxLayout")
         self.labelTitulo = QLabel(VehiculosView)
         self.labelTitulo.setObjectName(u"labelTitulo")
-        self.labelTitulo.setAlignment(Qt.AlignCenter)
         font = QFont()
+        font.setFamilies([u"Segoe UI"])
         font.setPointSize(22)
         font.setBold(True)
         self.labelTitulo.setFont(font)
+        self.labelTitulo.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         self.vboxLayout.addWidget(self.labelTitulo)
 
         self.labelSubtitulo = QLabel(VehiculosView)
         self.labelSubtitulo.setObjectName(u"labelSubtitulo")
-        self.labelSubtitulo.setAlignment(Qt.AlignCenter)
+        self.labelSubtitulo.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         self.vboxLayout.addWidget(self.labelSubtitulo)
 
@@ -60,6 +61,8 @@ class Ui_VehiculosView(object):
         __qtablewidgetitem6 = QTableWidgetItem()
         self.tablaVehiculos.setHorizontalHeaderItem(6, __qtablewidgetitem6)
         self.tablaVehiculos.setObjectName(u"tablaVehiculos")
+        self.tablaVehiculos.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
+        self.tablaVehiculos.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.tablaVehiculos.setColumnCount(7)
 
         self.vboxLayout.addWidget(self.tablaVehiculos)

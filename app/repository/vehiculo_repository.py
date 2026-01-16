@@ -54,3 +54,6 @@ class VehiculoRepository:
         """, (user_id,))
         con.commit()
         con.close()
+        
+        
+    

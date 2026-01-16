@@ -2,6 +2,8 @@ from PySide6.QtWidgets import QWidget, QMessageBox, QFileDialog
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_pdf import PdfPages
 from matplotlib.figure import Figure
+import matplotlib.dates as mdates
+from datetime import datetime
 import csv
 
 from app.vista.estadisticas_ui import Ui_EstadisticasView
@@ -66,6 +68,55 @@ class EstadisticasController:
         self.ui.layoutConsumo.addWidget(self.canvas_consumo)
 
     # =================================================
+    # CONVERTIR FECHAS A DATETIME
+    # =================================================
+    def _convertir_fechas(self, fechas_str):
+        """Convierte strings de fecha a objetos datetime"""
+        fechas_dt = []
+        for fecha in fechas_str:
+            if isinstance(fecha, str):
+                # Intenta varios formatos comunes
+                for fmt in ['%Y-%m-%d', '%d/%m/%Y', '%Y/%m/%d']:
+                    try:
+                        fechas_dt.append(datetime.strptime(fecha, fmt))
+                        break
+                    except ValueError:
+                        continue
+            elif isinstance(fecha, datetime):
+                fechas_dt.append(fecha)
+        return fechas_dt
+
+    # =================================================
+    # CONFIGURAR FORMATO DE FECHAS
+    # =================================================
+    def _configurar_formato_fechas(self, ax, fechas):
+        """Configura el formato de las fechas en el eje X"""
+        if not fechas:
+            return
+        
+        num_fechas = len(fechas)
+        
+        # Formato según cantidad de datos
+        if num_fechas <= 7:
+            # Pocos datos: mostrar todas las fechas con día y mes
+            ax.xaxis.set_major_formatter(mdates.DateFormatter('%d %b'))
+            ax.xaxis.set_major_locator(mdates.DayLocator())
+        elif num_fechas <= 15:
+            # Datos medios: mostrar cada 2-3 días
+            ax.xaxis.set_major_formatter(mdates.DateFormatter('%d %b'))
+            ax.xaxis.set_major_locator(mdates.DayLocator(interval=2))
+        else:
+            # Muchos datos: mostrar solo algunos días
+            ax.xaxis.set_major_formatter(mdates.DateFormatter('%d %b'))
+            ax.xaxis.set_major_locator(mdates.DayLocator(interval=5))
+        
+        # Rotar las etiquetas para mejor legibilidad
+        ax.tick_params(axis='x', rotation=45)
+        
+        # Ajustar para que no se corten las etiquetas
+        ax.figure.autofmt_xdate()
+
+    # =================================================
     # ACTUALIZAR GRÁFICAS
     # =================================================
     def actualizar_graficas(self):
@@ -89,26 +140,42 @@ class EstadisticasController:
         # ---------- GASTO ----------
         self.ax_gasto.clear()
         if self.datos_gasto:
-            fechas = [d[0] for d in self.datos_gasto]
+            fechas_str = [d[0] for d in self.datos_gasto]
             gastos = [d[1] for d in self.datos_gasto]
-            self.ax_gasto.plot(fechas, gastos, marker="o", color="#00c853")
+            
+            # Convertir fechas a datetime
+            fechas_dt = self._convertir_fechas(fechas_str)
+            
+            if fechas_dt:
+                self.ax_gasto.plot(fechas_dt, gastos, marker="o", color="#00c853", linewidth=2, markersize=6)
+                self._configurar_formato_fechas(self.ax_gasto, fechas_dt)
 
-        self.ax_gasto.set_title("Gasto (€)", color="white")
+        self.ax_gasto.set_title("Gasto (€)", color="white", fontsize=14, pad=15)
+        self.ax_gasto.set_ylabel("Euros (€)", color="white")
         self.ax_gasto.tick_params(colors="white")
-        self.ax_gasto.grid(True, alpha=0.3)
+        self.ax_gasto.grid(True, alpha=0.3, linestyle='--')
+        self.ax_gasto.set_facecolor('#1a1a1a')
         self.fig_gasto.tight_layout()
         self.canvas_gasto.draw()
 
         # ---------- CONSUMO ----------
         self.ax_consumo.clear()
         if self.datos_consumo:
-            fechas = [d[0] for d in self.datos_consumo]
+            fechas_str = [d[0] for d in self.datos_consumo]
             consumos = [d[1] for d in self.datos_consumo]
-            self.ax_consumo.plot(fechas, consumos, marker="o", color="#4fc3f7")
+            
+            # Convertir fechas a datetime
+            fechas_dt = self._convertir_fechas(fechas_str)
+            
+            if fechas_dt:
+                self.ax_consumo.plot(fechas_dt, consumos, marker="o", color="#4fc3f7", linewidth=2, markersize=6)
+                self._configurar_formato_fechas(self.ax_consumo, fechas_dt)
 
-        self.ax_consumo.set_title("Consumo (L/100km)", color="white")
+        self.ax_consumo.set_title("Consumo (L/100km)", color="white", fontsize=14, pad=15)
+        self.ax_consumo.set_ylabel("Litros/100km", color="white")
         self.ax_consumo.tick_params(colors="white")
-        self.ax_consumo.grid(True, alpha=0.3)
+        self.ax_consumo.grid(True, alpha=0.3, linestyle='--')
+        self.ax_consumo.set_facecolor('#1a1a1a')
         self.fig_consumo.tight_layout()
         self.canvas_consumo.draw()
 
@@ -132,26 +199,37 @@ class EstadisticasController:
             # GASTO
             ax1 = fig.add_subplot(211)
             if self.datos_gasto:
-                ax1.plot(
-                    [d[0] for d in self.datos_gasto],
-                    [d[1] for d in self.datos_gasto],
-                    marker="o",
-                    color="#00c853"
-                )
-            ax1.set_title("Gasto (€)")
-            ax1.grid(True)
+                fechas_str = [d[0] for d in self.datos_gasto]
+                gastos = [d[1] for d in self.datos_gasto]
+                fechas_dt = self._convertir_fechas(fechas_str)
+                
+                if fechas_dt:
+                    ax1.plot(fechas_dt, gastos, marker="o", color="#00c853", linewidth=2)
+                    ax1.xaxis.set_major_formatter(mdates.DateFormatter('%d %b'))
+                    if len(fechas_dt) > 15:
+                        ax1.xaxis.set_major_locator(mdates.DayLocator(interval=3))
+                    fig.autofmt_xdate()
+                    
+            ax1.set_title("Gasto (€)", fontsize=12, pad=10)
+            ax1.set_ylabel("Euros (€)")
+            ax1.grid(True, alpha=0.3)
 
             # CONSUMO
             ax2 = fig.add_subplot(212)
             if self.datos_consumo:
-                ax2.plot(
-                    [d[0] for d in self.datos_consumo],
-                    [d[1] for d in self.datos_consumo],
-                    marker="o",
-                    color="#4fc3f7"
-                )
-            ax2.set_title("Consumo (L/100km)")
-            ax2.grid(True)
+                fechas_str = [d[0] for d in self.datos_consumo]
+                consumos = [d[1] for d in self.datos_consumo]
+                fechas_dt = self._convertir_fechas(fechas_str)
+                
+                if fechas_dt:
+                    ax2.plot(fechas_dt, consumos, marker="o", color="#4fc3f7", linewidth=2)
+                    ax2.xaxis.set_major_formatter(mdates.DateFormatter('%d %b'))
+                    if len(fechas_dt) > 15:
+                        ax2.xaxis.set_major_locator(mdates.DayLocator(interval=3))
+                        
+            ax2.set_title("Consumo (L/100km)", fontsize=12, pad=10)
+            ax2.set_ylabel("Litros/100km")
+            ax2.grid(True, alpha=0.3)
 
             fig.tight_layout()
             pdf.savefig(fig)

@@ -1,4 +1,5 @@
 from app.service.usuario_service import UsuarioService
+from PySide6.QtWidgets import QMessageBox
 
 
 class RegistroController:
@@ -11,7 +12,7 @@ class RegistroController:
 
         self.cargar_ciudades()
 
-        # Conexiones CORRECTAS según la UI real
+        # Conexiones según la UI real
         self.ui.btnRegistrarse.clicked.connect(self.registrar)
         self.ui.btnIrLogin.clicked.connect(self.app.mostrar_login)
 
@@ -90,9 +91,16 @@ class RegistroController:
         if not usuario:
             return self._error("El usuario ya existe")
 
-        # Todo correcto → menú
-        self.app.mostrar_menu(usuario)
+        # ✅ ÉXITO → MENSAJE Y LOGIN
+        QMessageBox.information(
+            self.widget,
+            "Registro completado",
+            "Usuario registrado correctamente.\n\nAhora inicia sesión."
+        )
 
+        self.app.mostrar_login()
+
+    # -----------------------
     def _error(self, mensaje):
         self.ui.labelMensaje.setText(mensaje)
         self.ui.labelMensaje.setVisible(True)

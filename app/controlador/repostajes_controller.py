@@ -18,13 +18,13 @@ class RepostajesController:
         self.vehiculo_id = self.app.usuario.get("vehiculo_activo_id")
         if not self.vehiculo_id:
             QMessageBox.warning(
-                None,
+                self.app.ventana_actual,
                 "Atención",
-                "Selecciona un vehículo activo primero"
+                "No tienes ningún vehículo activo.\n\n"
+                "Registra o selecciona uno para acceder a los repostajes."
             )
-            self.app.mostrar_menu(self.app.usuario)
-            return
-
+            return  # 👈 CLAVE: no cambies de vista
+        
         self.widget = QWidget()
         self.ui = Ui_RepostajesView()
         self.ui.setupUi(self.widget)

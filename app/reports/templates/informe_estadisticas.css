@@ -1,0 +1,172 @@
+/* =========================
+   CONFIGURACIÓN GENERAL
+========================= */
+
+@page {
+    size: A4;
+    margin: 2cm;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 11px;
+    color: #1f2933;
+}
+
+/* =========================
+   CABECERA
+========================= */
+
+header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+header h1 {
+    font-size: 20px;
+    margin-bottom: 8px;
+    color: #0f3a43;
+}
+
+header p {
+    margin: 2px 0;
+    font-size: 11px;
+}
+
+/* =========================
+   SECCIONES
+========================= */
+
+section {
+    margin-bottom: 25px;
+}
+
+section h2 {
+    font-size: 14px;
+    color: #155e6a;
+    border-bottom: 2px solid #22d3ee;
+    padding-bottom: 4px;
+    margin-bottom: 10px;
+}
+
+/* =========================
+   BLOQUES DE DATOS
+========================= */
+
+.bloque {
+    padding: 8px 10px;
+    background-color: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    line-height: 1.6;
+}
+
+/* =========================
+   RESUMEN EJECUTIVO
+========================= */
+
+.resumen {
+    padding: 10px;
+    background-color: #ecfeff;
+    border: 1px solid #67e8f9;
+    border-radius: 6px;
+    line-height: 1.6;
+}
+
+.estado {
+    margin-top: 10px;
+    font-size: 13px;
+    font-weight: bold;
+    text-align: center;
+    padding: 6px;
+    border-radius: 4px;
+}
+
+/* Estados visuales */
+.estado.eficiente {
+    background-color: #dcfce7;
+    color: #166534;
+    border: 1px solid #22c55e;
+}
+
+.estado.normal {
+    background-color: #fff7ed;
+    color: #9a3412;
+    border: 1px solid #fb923c;
+}
+
+.estado.ineficiente {
+    background-color: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #ef4444;
+}
+
+.comentario {
+    margin-top: 8px;
+    font-style: italic;
+    text-align: center;
+}
+
+/* =========================
+   TABLA DE MÉTRICAS
+========================= */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+}
+
+td {
+    padding: 6px;
+    border: 1px solid #cbd5e1;
+    font-size: 11px;
+}
+
+td:first-child {
+    font-weight: bold;
+    background-color: #f1f5f9;
+}
+
+/* =========================
+   GRÁFICAS
+========================= */
+
+.grafica {
+    width: 100%;
+    max-height: 400px;
+    margin-top: 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    page-break-inside: avoid;
+}
+
+/* =========================
+   CONCLUSIONES
+========================= */
+
+.texto {
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+ul {
+    margin-left: 20px;
+}
+
+ul li {
+    margin-bottom: 6px;
+}
+
+/* =========================
+   PIE DE PÁGINA
+========================= */
+
+footer {
+    text-align: center;
+    font-size: 10px;
+    color: #475569;
+    margin-top: 40px;
+    border-top: 1px solid #cbd5e1;
+    padding-top: 8px;
+}

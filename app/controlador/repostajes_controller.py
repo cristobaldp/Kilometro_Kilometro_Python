@@ -144,38 +144,48 @@ class RepostajesController:
 
     # ---------------------------------
     def exportar_pdf(self):
-        path, _ = QFileDialog.getSaveFileName(
-            self.widget, "Guardar PDF", "", "PDF (*.pdf)"
+     path, _ = QFileDialog.getSaveFileName(
+        self.widget, "Guardar PDF", "", "PDF (*.pdf)"
+     )
+     if not path:
+        return
+
+    # Datos (filtrados o completos)
+     datos = self._datos_filtrados
+     if datos is None:
+        datos = self.service.obtener_para_exportar(self.vehiculo_id)
+
+    # Datos del usuario (limpios y presentables)
+     usuario = {
+        "Nombre": self.app.usuario.get("nombre"),
+        "Apellidos": self.app.usuario.get("apellidos"),
+        "Nombre de usuario": self.app.usuario.get("username"),
+        "Email": self.app.usuario.get("email"),
+        "Teléfono": self.app.usuario.get("telefono"),
+        "Ciudad": self.app.usuario.get("ciudad")
+     }
+
+    # Vehículo activo
+     vehiculo = self.vehiculo_service.obtener_por_id(self.vehiculo_id)
+     if not vehiculo:
+        self._msg(
+            "PDF",
+            "No se pudo obtener la información del vehículo",
+            QMessageBox.Warning
         )
-        if not path:
-            return
+        return
 
-        datos = self._datos_filtrados
-        if datos is None:
-            datos = self.service.obtener_para_exportar(self.vehiculo_id)
+    # Generar informe
+     InformeRepostajesPDF.generar(
+        path,
+        usuario,
+        vehiculo,
+        datos,
+        self._periodo_actual
+     )
 
-        usuario = {
-            k: v for k, v in self.app.usuario.items() if k != "id"
-        }
+     self._msg("PDF", "Informe generado correctamente", QMessageBox.Information)
 
-        vehiculo = self.vehiculo_service.obtener_por_id(self.vehiculo_id)
-        if not vehiculo:
-            self._msg(
-                "PDF",
-                "No se pudo obtener la información del vehículo",
-                QMessageBox.Warning
-            )
-            return
-
-        InformeRepostajesPDF.generar(
-            path,
-            usuario,
-            vehiculo,
-            datos,
-            self._periodo_actual
-        )
-
-        self._msg("PDF", "Informe generado correctamente", QMessageBox.Information)
 
     # ---------------------------------
     def volver_menu(self):

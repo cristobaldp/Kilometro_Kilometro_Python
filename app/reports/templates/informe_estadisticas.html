@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Informe de Estadísticas</title>
+    <link rel="stylesheet" href="informe_estadisticas.css">
+</head>
+<body>
+
+<!-- ================= CABECERA ================= -->
+<header>
+    <h1>INFORME DE ESTADÍSTICAS DEL VEHÍCULO</h1>
+    <p><strong>Fecha de generación:</strong> {{ fecha_generacion }}</p>
+    <p><strong>Periodo analizado:</strong> {{ periodo }}</p>
+</header>
+
+<!-- ================= USUARIO ================= -->
+<section>
+    <h2>Datos del usuario</h2>
+    <div class="bloque">
+        {{ usuario }}
+    </div>
+</section>
+
+<!-- ================= VEHÍCULO ================= -->
+<section>
+    <h2>Datos del vehículo</h2>
+    <div class="bloque">
+        {{ vehiculo }}
+    </div>
+</section>
+
+<!-- ================= RESUMEN EJECUTIVO ================= -->
+<section>
+    <h2>Resumen ejecutivo</h2>
+
+    <div class="resumen">
+        <p><strong>Consumo real:</strong> {{ consumo_real }} L/100km</p>
+        <p><strong>Consumo declarado:</strong> {{ consumo_declarado }} L/100km</p>
+        <p><strong>Diferencia:</strong> {{ diferencia }} %</p>
+
+        <p class="estado {{ estado_clase }}">
+            ESTADO: {{ estado }}
+        </p>
+
+        <p class="comentario">
+            {{ comentario_estado }}
+        </p>
+    </div>
+</section>
+
+<!-- ================= MÉTRICAS ================= -->
+<section>
+    <h2>Métricas del período</h2>
+
+    <table>
+        <tbody>
+            {{ metricas }}
+        </tbody>
+    </table>
+</section>
+
+<!-- ================= GRÁFICAS ================= -->
+<section>
+    <h2>Evolución del gasto</h2>
+    <img src="{{ grafica_gasto }}" class="grafica">
+    <p class="texto">
+        {{ explicacion_gasto }}
+    </p>
+</section>
+
+<section>
+    <h2>Evolución del consumo</h2>
+    <img src="{{ grafica_consumo }}" class="grafica">
+    <p class="texto">
+        {{ explicacion_consumo }}
+    </p>
+</section>
+
+<section>
+    <h2>Consumo real vs consumo declarado</h2>
+    <img src="{{ grafica_comparativa }}" class="grafica">
+    <p class="texto">
+        {{ explicacion_comparativa }}
+    </p>
+</section>
+
+<!-- ================= CONCLUSIONES ================= -->
+<section>
+    <h2>Conclusiones y recomendaciones</h2>
+
+    <p class="texto">
+        {{ conclusiones }}
+    </p>
+
+    <ul>
+        {{ recomendaciones }}
+    </ul>
+</section>
+
+<!-- ================= PIE ================= -->
+<footer>
+    Informe generado por la aplicación <strong>Kilómetro a Kilómetro</strong>
+</footer>
+
+</body>
+</html>

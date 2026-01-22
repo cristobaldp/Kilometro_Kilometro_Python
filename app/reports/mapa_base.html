@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+
+    <style>
+        html, body { margin:0; height:100%; }
+        #map { height:100%; width:100%; }
+    </style>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css">
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/MarkerCluster.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/MarkerCluster.Default.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/leaflet.markercluster.js"></script>
+
+</head>
+<body>
+
+<!-- 🔍 BUSCADOR SIEMPRE PRESENTE -->
+<div style="
+    position:absolute; top:15px; left:50%; transform:translateX(-50%);
+    background:white; padding:10px; border-radius:10px;
+    box-shadow:0 3px 10px rgba(0,0,0,0.3);
+    z-index:9999;
+">
+    <input id="localidad" placeholder="Buscar localidad..."
+        style="padding:8px; width:260px;">
+    <button onclick="buscar()" style="padding:8px;">Buscar</button>
+</div>
+
+<div id="map"></div>
+
+<script src="qrc:///qtwebchannel/qwebchannel.js"></script>
+
+<script>
+let backend = null;
+
+new QWebChannel(qt.webChannelTransport, function(channel){
+    backend = channel.objects.backend;
+});
+
+var map = L.map("map").setView([40.4167, -3.70325], 6);
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map);
+
+var markerCluster = L.markerClusterGroup().addTo(map);
+
+// PYTHON → JS
+function actualizarMarcadores(datos){
+    markerCluster.clearLayers();
+
+    map.setView([datos.centro.lat, datos.centro.lon], 13);
+
+    datos.lista.forEach(g => {
+
+        var m = L.marker([g.lat, g.lon]);
+
+        m.bindPopup(`
+            <b>${g.nombre}</b><br>
+            ${g.direccion}<br>
+            <b>Distancia:</b> ${g.dist} km<br><br>
+
+            <b> Gasolina 95 E5:</b> ${g.precio95} €/L<br>
+            <b> Gasolina 95 E10:</b> ${g.precio95_10} €/L<br>
+            <b> Gasolina 98 E5:</b> ${g.precio98} €/L<br>
+            <b> Gasolina 98 E10:</b> ${g.precio98_10} €/L<br><br>
+
+            <b> Diésel A:</b> ${g.precioDieselA} €/L<br>
+            <b> Diésel Premium:</b> ${g.precioDieselPremium} €/L<br><br>
+
+            <b> GLP:</b> ${g.precioGLP} €/L<br>
+            <b> GNC:</b> ${g.precioGNC} €/kg<br>
+            <b> GNL:</b> ${g.precioGNL} €/kg<br>
+
+            <b> Hidrógeno:</b> ${g.precioHidrogeno} €/kg
+        `);
+
+        markerCluster.addLayer(m);
+    });
+}
+
+// JS → PYTHON
+function buscar(){
+    const texto = document.getElementById("localidad").value;
+    if (texto.trim() === "") { 
+        alert("Escribe algo"); 
+        return; 
+    }
+    backend.buscarLocalidad(texto);
+}
+</script>
+
+</body>
+</html>

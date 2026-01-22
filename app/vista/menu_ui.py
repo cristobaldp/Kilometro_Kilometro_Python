@@ -353,9 +353,9 @@ class Ui_MenuPrincipalView(object):
 
         self.gridLayout.addWidget(self.btnPerfil, 1, 1, 1, 1)
 
-        self.btnAjustes = QPushButton(MenuPrincipalView)
-        self.btnAjustes.setObjectName(u"btnAjustes")
-        self.btnAjustes.setStyleSheet(u"/* =========================================\n"
+        self.btnMapa = QPushButton(MenuPrincipalView)
+        self.btnMapa.setObjectName(u"btnMapa")
+        self.btnMapa.setStyleSheet(u"/* =========================================\n"
 "   BOT\u00d3N ALTERNATIVO \u2013 BLANCO AZULADO\n"
 "========================================= */\n"
 "\n"
@@ -366,7 +366,7 @@ class Ui_MenuPrincipalView(object):
 "    border: 1px solid #22d3ee;\n"
 "    border-radius: 12px;\n"
 "\n"
-"    padding: 10px 18px;\n"
+"    padding: 20px 18px;\n"
 "    font-size: 14px;\n"
 "    font-weight: 600;\n"
 "}\n"
@@ -392,7 +392,7 @@ class Ui_MenuPrincipalView(object):
 "}\n"
 "")
 
-        self.gridLayout.addWidget(self.btnAjustes, 2, 0, 1, 1)
+        self.gridLayout.addWidget(self.btnMapa, 2, 0, 1, 1)
 
         self.btnLogout = QPushButton(MenuPrincipalView)
         self.btnLogout.setObjectName(u"btnLogout")
@@ -456,8 +456,7 @@ class Ui_MenuPrincipalView(object):
 "Consumo y gasto", None))
         self.btnPerfil.setText(QCoreApplication.translate("MenuPrincipalView", u"Perfil\n"
 "Datos del usuario", None))
-        self.btnAjustes.setText(QCoreApplication.translate("MenuPrincipalView", u"Ajustes\n"
-"Preferencias", None))
+        self.btnMapa.setText(QCoreApplication.translate("MenuPrincipalView", u"Mapa de Gasolineras", None))
         self.btnLogout.setText(QCoreApplication.translate("MenuPrincipalView", u"Cerrar sesi\u00f3n", None))
     # retranslateUi
 

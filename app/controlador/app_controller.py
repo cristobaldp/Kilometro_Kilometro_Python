@@ -1,14 +1,17 @@
-from PySide6.QtWidgets import QWidget
+from PySide6.QtWidgets import QWidget, QProgressDialog
+from PySide6.QtCore import Qt
 
-# -------- VISTAS --------
+# -------- VISTAS (UI) --------
 from app.vista.login_ui import Ui_LoginView
 from app.vista.registro_ui import Ui_RegistroView
 from app.vista.menu_ui import Ui_MenuPrincipalView
 from app.vista.add_vehiculo_ui import Ui_AddVehiculoView
 from app.vista.add_repostaje_ui import Ui_AddRepostajeView
 from app.vista.perfil_ui import Ui_PerfilView
-from app.vista.ajustes_ui import Ui_AjustesView
 from app.vista.estadisticas_ui import Ui_EstadisticasView
+
+# 👉 VISTA REAL DEL MAPA
+from app.vista.mapa_gasolineras_view import MapaGasolinerasView
 
 # -------- CONTROLADORES --------
 from app.controlador.login_controller import LoginController
@@ -19,8 +22,12 @@ from app.controlador.add_vehiculo_controller import AddVehiculoController
 from app.controlador.repostajes_controller import RepostajesController
 from app.controlador.add_repostaje_controller import AddRepostajeController
 from app.controlador.perfil_controller import PerfilController
-from app.controlador.ajustes_controller import AjustesController
 from app.controlador.estadisticas_controller import EstadisticasController
+from app.controlador.mapa_gasolineras_controller import MapaGasolinerasController
+
+# -------- MAPA (SERVICE + REPO) --------
+from app.repository.gasolineras_api_repository import GasolinerasApiRepository
+from app.service.gasolineras_service import GasolinerasService
 
 
 class AppController:
@@ -28,7 +35,7 @@ class AppController:
     def __init__(self):
         self.ventana_actual = None
         self.controller_actual = None
-        self.usuario = None  # dict completo del usuario logueado
+        self.usuario = None
 
     # ==================================================
     # MÉTODO CENTRAL PARA MOSTRAR VENTANAS
@@ -115,18 +122,40 @@ class AppController:
         self._mostrar(widget)
 
     # ==================================================
-    # AJUSTES
+    # MAPA DE GASOLINERAS
     # ==================================================
-    def mostrar_ajustes(self):
-        widget = QWidget()
-        ui = Ui_AjustesView()
-        ui.setupUi(widget)
+    def mostrar_mapa_gasolineras(self):
+        # ---------- DIÁLOGO DE CARGA ----------
+        loading = QProgressDialog(
+            "Cargando mapa de gasolineras...\nObteniendo precios actualizados",
+            None,
+            0,
+            0,
+            self.ventana_actual
+        )
+        loading.setWindowTitle("Iniciando mapa")
+        loading.setCancelButton(None)
+        loading.setWindowModality(Qt.ApplicationModal)
+        loading.setMinimumWidth(350)
+        loading.show()
+        loading.repaint()
 
-        self.controller_actual = AjustesController(widget, ui, self)
+        # ---------- CREACIÓN DEL MAPA ----------
+        repo = GasolinerasApiRepository()
+        service = GasolinerasService(repo)
+        mapa_controller = MapaGasolinerasController(service, self)
+
+        widget = MapaGasolinerasView(mapa_controller)
+        mapa_controller.set_view(widget)
+
+        self.controller_actual = mapa_controller
         self._mostrar(widget)
+
+        # ---------- CERRAR LOADING ----------
+        loading.close()
 
     # ==================================================
     # ESTADÍSTICAS
     # ==================================================
     def mostrar_estadisticas(self):
-     self.controller_actual = EstadisticasController(self)
+        self.controller_actual = EstadisticasController(self)

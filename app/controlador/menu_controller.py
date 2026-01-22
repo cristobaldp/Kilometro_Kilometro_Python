@@ -1,5 +1,6 @@
 from PySide6.QtWidgets import QMessageBox
 
+
 class MenuController:
 
     def __init__(self, widget, ui, app):
@@ -11,12 +12,17 @@ class MenuController:
         username = usuario.get("username", "Usuario")
         self.ui.labelSubtitulo.setText(f"Bienvenido {username}")
 
-        # Conexiones
+        # =========================
+        # CONEXIONES DEL MENÚ
+        # =========================
         self.ui.btnVehiculos.clicked.connect(self.abrir_vehiculos)
         self.ui.btnRepostajes.clicked.connect(self.abrir_repostajes)
         self.ui.btnEstadisticas.clicked.connect(self.abrir_estadisticas)
         self.ui.btnPerfil.clicked.connect(self.abrir_perfil)
-        self.ui.btnAjustes.clicked.connect(self.abrir_ajustes)
+
+        # 🔥 MAPA DE GASOLINERAS (ANTES AJUSTES)
+        self.ui.btnMapa.clicked.connect(self.abrir_mapa)
+
         self.ui.btnLogout.clicked.connect(self.logout)
 
     # -------------------------
@@ -40,8 +46,8 @@ class MenuController:
         self.app.mostrar_perfil()
 
     # -------------------------
-    def abrir_ajustes(self):
-        self.app.mostrar_ajustes()
+    def abrir_mapa(self):
+        self.app.mostrar_mapa_gasolineras()
 
     # -------------------------
     def logout(self):

@@ -8,6 +8,7 @@ from reportlab.pdfgen import canvas
 from app.vista.repostajes_ui import Ui_RepostajesView
 from app.service.repostaje_service import RepostajeService
 
+from PySide6.QtCore import Qt
 
 class RepostajesController:
 
@@ -17,21 +18,58 @@ class RepostajesController:
 
         self.vehiculo_id = self.app.usuario.get("vehiculo_activo_id")
         if not self.vehiculo_id:
-            QMessageBox.warning(
-                self.app.ventana_actual,
-                "Atención",
+            msg = QMessageBox(self.app.ventana_actual)
+            msg.setWindowTitle("Atención")
+            msg.setText(
                 "No tienes ningún vehículo activo.\n\n"
                 "Registra o selecciona uno para acceder a los repostajes."
             )
-            return  # 👈 CLAVE: no cambies de vista
-        
+            msg.setIcon(QMessageBox.Warning)
+            msg.setStyleSheet("""
+            QMessageBox {
+                background-color: #081c20;
+                color: #ecfeff;
+                font-size: 13px;
+            }
+            QLabel {
+                color: #ecfeff;
+            }
+            QPushButton {
+                background-color: #0f3a43;
+                color: #ecfeff;
+                border: 1px solid #22d3ee;
+                border-radius: 8px;
+                padding: 6px 14px;
+                min-width: 90px;
+                font-weight: 600;
+            }
+            QPushButton:hover {
+                background-color: #155e6a;
+            }
+            """)
+            msg.exec()
+            return
+
         self.widget = QWidget()
         self.ui = Ui_RepostajesView()
         self.ui.setupUi(self.widget)
+        
+        self.ui.comboMes.setMaxVisibleItems(6)
+        self.ui.comboAnio.setMaxVisibleItems(6)
+
+        self.ui.comboMes.view().setVerticalScrollBarPolicy(
+       Qt.ScrollBarAsNeeded
+     )
+        self.ui.comboAnio.view().setVerticalScrollBarPolicy(
+      Qt.ScrollBarAsNeeded
+     )
+
 
         # Conexiones
         self.ui.btnVolver.clicked.connect(self.volver_menu)
         self.ui.btnNuevo.clicked.connect(self.nuevo_repostaje)
+        self.ui.btnBuscar.clicked.connect(self.buscar_por_fecha)
+
         self.ui.btnEliminar.clicked.connect(self.eliminar_repostaje)
         self.ui.btnExportCSV.clicked.connect(self.exportar_csv)
         self.ui.btnExportPDF.clicked.connect(self.exportar_pdf)
@@ -41,42 +79,77 @@ class RepostajesController:
 
     # ---------------------------------
     def cargar_repostajes(self):
-        datos = self.service.listar(self.vehiculo_id)
+     datos = self.service.listar(self.vehiculo_id)
+     self._cargar_tabla(datos)
+     
+     
+    def _cargar_tabla(self, datos):
+     self.ui.tablaRepostajes.setRowCount(0)
 
-        self.ui.tablaRepostajes.setRowCount(0)
-        self.ui.tablaRepostajes.setColumnCount(5)
-        self.ui.tablaRepostajes.setHorizontalHeaderLabels(
-            ["ID", "Fecha", "Litros", "Precio", "Km"]
-        )
+     for fila, r in enumerate(datos):
+        self.ui.tablaRepostajes.insertRow(fila)
+        for col, valor in enumerate(r):
+            self.ui.tablaRepostajes.setItem(
+                fila, col, QTableWidgetItem(str(valor))
+            )
 
-        for fila, r in enumerate(datos):
-            self.ui.tablaRepostajes.insertRow(fila)
-            for col, valor in enumerate(r):
-                self.ui.tablaRepostajes.setItem(
-                    fila, col, QTableWidgetItem(str(valor))
-                )
+     self.ui.tablaRepostajes.setColumnHidden(0, True)
 
-        self.ui.tablaRepostajes.setColumnHidden(0, True)
 
     # ---------------------------------
     def nuevo_repostaje(self):
         self.app.mostrar_add_repostaje()
+        
+    def buscar_por_fecha(self):
+     mes_texto = self.ui.comboMes.currentText()
+     anio_texto = self.ui.comboAnio.currentText()
+
+     mes = None
+     anio = None
+
+     if mes_texto != "Todos los meses":
+        meses = {
+            "Enero": 1, "Febrero": 2, "Marzo": 3,
+            "Abril": 4, "Mayo": 5, "Junio": 6,
+            "Julio": 7, "Agosto": 8, "Septiembre": 9,
+            "Octubre": 10, "Noviembre": 11, "Diciembre": 12
+        }
+        mes = meses.get(mes_texto)
+
+     if anio_texto != "Todos los años":
+        anio = int(anio_texto)
+
+     datos = self.service.listar_filtrado(
+        self.vehiculo_id,
+        mes,
+        anio
+     )
+
+     self._cargar_tabla(datos)
+ 
 
     # ---------------------------------
     def eliminar_repostaje(self):
         fila = self.ui.tablaRepostajes.currentRow()
         if fila == -1:
-            QMessageBox.warning(self.widget, "Eliminar", "Selecciona un repostaje")
+            msg = QMessageBox(self.widget)
+            msg.setWindowTitle("Eliminar")
+            msg.setText("Selecciona un repostaje")
+            msg.setIcon(QMessageBox.Warning)
+            msg.setStyleSheet(self._estilo_msgbox())
+            msg.exec()
             return
 
         repostaje_id = int(self.ui.tablaRepostajes.item(fila, 0).text())
 
-        if QMessageBox.question(
-            self.widget,
-            "Confirmar",
-            "¿Eliminar repostaje?",
-            QMessageBox.Yes | QMessageBox.No
-        ) == QMessageBox.Yes:
+        msg = QMessageBox(self.widget)
+        msg.setWindowTitle("Confirmar")
+        msg.setText("¿Eliminar repostaje?\n\nEsta acción no se puede deshacer.")
+        msg.setIcon(QMessageBox.Question)
+        msg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+        msg.setStyleSheet(self._estilo_msgbox())
+
+        if msg.exec() == QMessageBox.Yes:
             self.service.eliminar(repostaje_id)
             self.cargar_repostajes()
 
@@ -96,7 +169,12 @@ class RepostajesController:
             for _, fecha, litros, precio, km in datos:
                 writer.writerow([fecha, litros, precio, km])
 
-        QMessageBox.information(self.widget, "CSV", "Exportado correctamente")
+        msg = QMessageBox(self.widget)
+        msg.setWindowTitle("CSV")
+        msg.setText("Exportado correctamente")
+        msg.setIcon(QMessageBox.Information)
+        msg.setStyleSheet(self._estilo_msgbox())
+        msg.exec()
 
     # ---------------------------------
     def exportar_pdf(self):
@@ -126,8 +204,41 @@ class RepostajesController:
                 y = 800
 
         pdf.save()
-        QMessageBox.information(self.widget, "PDF", "Exportado correctamente")
+
+        msg = QMessageBox(self.widget)
+        msg.setWindowTitle("PDF")
+        msg.setText("Exportado correctamente")
+        msg.setIcon(QMessageBox.Information)
+        msg.setStyleSheet(self._estilo_msgbox())
+        msg.exec()
 
     # ---------------------------------
     def volver_menu(self):
         self.app.mostrar_menu(self.app.usuario)
+
+    # ---------------------------------
+    def _estilo_msgbox(self):
+        return """
+        QMessageBox {
+            background-color: #081c20;
+            color: #ecfeff;
+            font-size: 13px;
+        }
+        QLabel {
+            color: #ecfeff;
+        }
+        QPushButton {
+            background-color: #0f3a43;
+            color: #ecfeff;
+            border: 1px solid #22d3ee;
+            border-radius: 8px;
+            padding: 6px 14px;
+            min-width: 90px;
+            font-weight: 600;
+        }
+        QPushButton:hover {
+            background-color: #155e6a;
+        }
+        """
+        
+    

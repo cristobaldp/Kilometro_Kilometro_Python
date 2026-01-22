@@ -1,139 +1,745 @@
 # -*- coding: utf-8 -*-
 
-from PySide6.QtCore import (QCoreApplication, Qt)
-from PySide6.QtGui import QFont
-from PySide6.QtWidgets import (
-    QLabel, QLineEdit, QPushButton,
-    QComboBox, QDateEdit, QVBoxLayout, QWidget
-)
+################################################################################
+## Form generated from reading UI file 'registro.ui'
+##
+## Created by: Qt User Interface Compiler version 6.10.0
+##
+## WARNING! All changes made in this file will be lost when recompiling UI file!
+################################################################################
 
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+    QMetaObject, QObject, QPoint, QRect,
+    QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+    QFont, QFontDatabase, QGradient, QIcon,
+    QImage, QKeySequence, QLinearGradient, QPainter,
+    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QApplication, QComboBox, QDateEdit, QLabel,
+    QLineEdit, QPushButton, QSizePolicy, QSpacerItem,
+    QVBoxLayout, QWidget)
 
 class Ui_RegistroView(object):
     def setupUi(self, RegistroView):
         if not RegistroView.objectName():
-            RegistroView.setObjectName("RegistroView")
-        RegistroView.resize(420, 560)
-
+            RegistroView.setObjectName(u"RegistroView")
+        RegistroView.resize(445, 613)
+        RegistroView.setStyleSheet(u"QWidget {\n"
+"    background-color: #081c20;\n"
+"}\n"
+"/* ===============================\n"
+"   MENSAJES DIN\u00c1MICOS\n"
+"=============================== */\n"
+"\n"
+"QLabel#mensajeError {\n"
+"    color: #fbbf24;   /* \u00e1mbar */\n"
+"    font-size: 13px;\n"
+"    font-weight: 600;\n"
+"}\n"
+"\n"
+"QLabel#mensajeInfo {\n"
+"    color: #38bdf8;   /* azul */\n"
+"    font-size: 13px;\n"
+"}\n"
+"\n"
+"QLabel#mensajeOk {\n"
+"    color: #4ade80;   /* verde suave */\n"
+"    font-size: 13px;\n"
+"}\n"
+"")
         self.vboxLayout = QVBoxLayout(RegistroView)
+        self.vboxLayout.setObjectName(u"vboxLayout")
+        self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
-        # -------- TÍTULO --------
-        self.labelTitulo = QLabel(RegistroView)
-        self.labelTitulo.setObjectName("labelTitulo")
-        font = QFont()
-        font.setPointSize(18)
-        font.setBold(True)
-        self.labelTitulo.setFont(font)
-        self.labelTitulo.setAlignment(Qt.AlignCenter)
-        self.vboxLayout.addWidget(self.labelTitulo)
+        self.vboxLayout.addItem(self.verticalSpacer_2)
 
-        # -------- CAMPOS --------
+        self.label = QLabel(RegistroView)
+        self.label.setObjectName(u"label")
+        self.label.setStyleSheet(u"/* =========================================\n"
+"   LABELS \u2013 AZUL PETR\u00d3LEO OSCURO\n"
+"========================================= */\n"
+"\n"
+"/* Label normal (texto est\u00e1ndar) */\n"
+"QLabel {\n"
+"    color: #cfe9ee;              /* azul muy claro */\n"
+"    font-size: 20px;\n"
+"}\n"
+"\n"
+"/* T\u00edtulos de secci\u00f3n / pantallas */\n"
+"QLabel#titulo {\n"
+"    color: #22d3ee;              /* cyan petr\u00f3leo */\n"
+"    font-size: 22px;\n"
+"    font-weight: 600;\n"
+"}\n"
+"\n"
+"/* Subt\u00edtulos */\n"
+"QLabel#subtitulo {\n"
+"    color: #7dd3fc;\n"
+"    font-size: 16px;\n"
+"    font-weight: 500;\n"
+"}\n"
+"\n"
+"/* Labels de formulario (Usuario, Contrase\u00f1a, etc.) */\n"
+"QLabel#campo {\n"
+"    color: #9ddae6;\n"
+"    font-size: 13px;\n"
+"    font-weight: 500;\n"
+"}\n"
+"\n"
+"/* Texto secundario / ayuda */\n"
+"QLabel#hint {\n"
+"    color: #6fbdd0;\n"
+"    font-size: 12px;\n"
+"}\n"
+"\n"
+"/* Avisos / combustible / warning */\n"
+"QLabel#warning {\n"
+"    color: #fbbf24;              /* \u00e1mbar */"
+                        "\n"
+"    font-size: 13px;\n"
+"    font-weight: 600;\n"
+"}\n"
+"\n"
+"/* Error */\n"
+"QLabel#error {\n"
+"    color: #fb7185;              /* rojo suave */\n"
+"    font-size: 13px;\n"
+"    font-weight: 600;\n"
+"}\n"
+"/* =========================================\n"
+"   MENSAJES DE ERROR \u2013 ESTILO PROPIO\n"
+"========================================= */\n"
+"\n"
+"QLabel#error {\n"
+"    color: #fbbf24;          /* \u00e1mbar visible */\n"
+"    font-size: 13px;\n"
+"    font-weight: 600;\n"
+"}\n"
+"\n"
+"")
+        self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        self.vboxLayout.addWidget(self.label)
+
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.vboxLayout.addItem(self.verticalSpacer)
+
         self.inputNombre = QLineEdit(RegistroView)
-        self.inputNombre.setObjectName("inputNombre")
+        self.inputNombre.setObjectName(u"inputNombre")
+        self.inputNombre.setStyleSheet(u"/* =========================================\n"
+"   ENTRADAS DE TEXTO \u2013 CONTRASTE AZUL PETR\u00d3LEO\n"
+"========================================= */\n"
+"\n"
+"QLineEdit {\n"
+"    background-color: #0f3a43;        /* M\u00c1S CLARO que el fondo */\n"
+"    color: #ecfeff;\n"
+"    border: 1px solid #1f6f7a;\n"
+"    border-radius: 12px;\n"
+"    padding: 11px 16px;\n"
+"    font-size: 14px;\n"
+"    selection-background-color: #22d3ee;\n"
+"    selection-color: #041518;\n"
+"}\n"
+"\n"
+"/* Placeholder */\n"
+"QLineEdit::placeholder {\n"
+"    color: #9adce6;\n"
+"}\n"
+"\n"
+"/* Hover */\n"
+"QLineEdit:hover {\n"
+"    border-color: #22d3ee;\n"
+"    background-color: #134852;\n"
+"}\n"
+"\n"
+"/* Focus: contraste fuerte pero elegante */\n"
+"QLineEdit:focus {\n"
+"    background-color: #155e6a;\n"
+"    border: 2px solid #22d3ee;\n"
+"}\n"
+"")
+
         self.vboxLayout.addWidget(self.inputNombre)
 
         self.inputApellidos = QLineEdit(RegistroView)
-        self.inputApellidos.setObjectName("inputApellidos")
+        self.inputApellidos.setObjectName(u"inputApellidos")
+        self.inputApellidos.setStyleSheet(u"/* =========================================\n"
+"   ENTRADAS DE TEXTO \u2013 CONTRASTE AZUL PETR\u00d3LEO\n"
+"========================================= */\n"
+"\n"
+"QLineEdit {\n"
+"    background-color: #0f3a43;        /* M\u00c1S CLARO que el fondo */\n"
+"    color: #ecfeff;\n"
+"    border: 1px solid #1f6f7a;\n"
+"    border-radius: 12px;\n"
+"    padding: 11px 16px;\n"
+"    font-size: 14px;\n"
+"    selection-background-color: #22d3ee;\n"
+"    selection-color: #041518;\n"
+"}\n"
+"\n"
+"/* Placeholder */\n"
+"QLineEdit::placeholder {\n"
+"    color: #9adce6;\n"
+"}\n"
+"\n"
+"/* Hover */\n"
+"QLineEdit:hover {\n"
+"    border-color: #22d3ee;\n"
+"    background-color: #134852;\n"
+"}\n"
+"\n"
+"/* Focus: contraste fuerte pero elegante */\n"
+"QLineEdit:focus {\n"
+"    background-color: #155e6a;\n"
+"    border: 2px solid #22d3ee;\n"
+"}\n"
+"")
+
         self.vboxLayout.addWidget(self.inputApellidos)
 
         self.inputUsername = QLineEdit(RegistroView)
-        self.inputUsername.setObjectName("inputUsername")
+        self.inputUsername.setObjectName(u"inputUsername")
+        self.inputUsername.setStyleSheet(u"/* =========================================\n"
+"   ENTRADAS DE TEXTO \u2013 CONTRASTE AZUL PETR\u00d3LEO\n"
+"========================================= */\n"
+"\n"
+"QLineEdit {\n"
+"    background-color: #0f3a43;        /* M\u00c1S CLARO que el fondo */\n"
+"    color: #ecfeff;\n"
+"    border: 1px solid #1f6f7a;\n"
+"    border-radius: 12px;\n"
+"    padding: 11px 16px;\n"
+"    font-size: 14px;\n"
+"    selection-background-color: #22d3ee;\n"
+"    selection-color: #041518;\n"
+"}\n"
+"\n"
+"/* Placeholder */\n"
+"QLineEdit::placeholder {\n"
+"    color: #9adce6;\n"
+"}\n"
+"\n"
+"/* Hover */\n"
+"QLineEdit:hover {\n"
+"    border-color: #22d3ee;\n"
+"    background-color: #134852;\n"
+"}\n"
+"\n"
+"/* Focus: contraste fuerte pero elegante */\n"
+"QLineEdit:focus {\n"
+"    background-color: #155e6a;\n"
+"    border: 2px solid #22d3ee;\n"
+"}\n"
+"")
+
         self.vboxLayout.addWidget(self.inputUsername)
 
         self.inputEmail = QLineEdit(RegistroView)
-        self.inputEmail.setObjectName("inputEmail")
+        self.inputEmail.setObjectName(u"inputEmail")
+        self.inputEmail.setStyleSheet(u"/* =========================================\n"
+"   ENTRADAS DE TEXTO \u2013 CONTRASTE AZUL PETR\u00d3LEO\n"
+"========================================= */\n"
+"\n"
+"QLineEdit {\n"
+"    background-color: #0f3a43;        /* M\u00c1S CLARO que el fondo */\n"
+"    color: #ecfeff;\n"
+"    border: 1px solid #1f6f7a;\n"
+"    border-radius: 12px;\n"
+"    padding: 11px 16px;\n"
+"    font-size: 14px;\n"
+"    selection-background-color: #22d3ee;\n"
+"    selection-color: #041518;\n"
+"}\n"
+"\n"
+"/* Placeholder */\n"
+"QLineEdit::placeholder {\n"
+"    color: #9adce6;\n"
+"}\n"
+"\n"
+"/* Hover */\n"
+"QLineEdit:hover {\n"
+"    border-color: #22d3ee;\n"
+"    background-color: #134852;\n"
+"}\n"
+"\n"
+"/* Focus: contraste fuerte pero elegante */\n"
+"QLineEdit:focus {\n"
+"    background-color: #155e6a;\n"
+"    border: 2px solid #22d3ee;\n"
+"}\n"
+"")
+
         self.vboxLayout.addWidget(self.inputEmail)
 
         self.inputTelefono = QLineEdit(RegistroView)
-        self.inputTelefono.setObjectName("inputTelefono")
+        self.inputTelefono.setObjectName(u"inputTelefono")
+        self.inputTelefono.setStyleSheet(u"/* =========================================\n"
+"   ENTRADAS DE TEXTO \u2013 CONTRASTE AZUL PETR\u00d3LEO\n"
+"========================================= */\n"
+"\n"
+"QLineEdit {\n"
+"    background-color: #0f3a43;        /* M\u00c1S CLARO que el fondo */\n"
+"    color: #ecfeff;\n"
+"    border: 1px solid #1f6f7a;\n"
+"    border-radius: 12px;\n"
+"    padding: 11px 16px;\n"
+"    font-size: 14px;\n"
+"    selection-background-color: #22d3ee;\n"
+"    selection-color: #041518;\n"
+"}\n"
+"\n"
+"/* Placeholder */\n"
+"QLineEdit::placeholder {\n"
+"    color: #9adce6;\n"
+"}\n"
+"\n"
+"/* Hover */\n"
+"QLineEdit:hover {\n"
+"    border-color: #22d3ee;\n"
+"    background-color: #134852;\n"
+"}\n"
+"\n"
+"/* Focus: contraste fuerte pero elegante */\n"
+"QLineEdit:focus {\n"
+"    background-color: #155e6a;\n"
+"    border: 2px solid #22d3ee;\n"
+"}\n"
+"")
+
         self.vboxLayout.addWidget(self.inputTelefono)
 
-        self.comboCiudad = QComboBox(RegistroView)
-        self.comboCiudad.setObjectName("comboCiudad")
-        self.vboxLayout.addWidget(self.comboCiudad)
-
         self.dateNacimiento = QDateEdit(RegistroView)
-        self.dateNacimiento.setObjectName("dateNacimiento")
+        self.dateNacimiento.setObjectName(u"dateNacimiento")
+        self.dateNacimiento.setStyleSheet(u"/* =========================================\n"
+"   DATE EDIT \u2013 SIN DESCUADRES (FINAL)\n"
+"========================================= */\n"
+"\n"
+"QDateEdit {\n"
+"    background-color: #0f3a43;\n"
+"    color: #ecfeff;\n"
+"\n"
+"    border: 1px solid #1f6f7a;\n"
+"    border-radius: 12px;\n"
+"\n"
+"    padding-left: 14px;\n"
+"    padding-right: 32px;\n"
+"\n"
+"    font-size: 14px;\n"
+"    min-height: 34px;\n"
+"}\n"
+"\n"
+"/* Hover */\n"
+"QDateEdit:hover {\n"
+"    border: 1px solid #22d3ee;\n"
+"}\n"
+"\n"
+"/* Focus (MISMO BORDE \u2192 NO DESCUADRA) */\n"
+"QDateEdit:focus {\n"
+"    background-color: #155e6a;\n"
+"    border: 1px solid #22d3ee;\n"
+"}\n"
+"\n"
+"/* Texto interno */\n"
+"QDateEdit QAbstractSpinBox {\n"
+"    background: transparent;\n"
+"    color: #ecfeff;\n"
+"    padding: 0;\n"
+"    margin: 0;\n"
+"}\n"
+"\n"
+"/* Bot\u00f3n calendario */\n"
+"QDateEdit::drop-down {\n"
+"    subcontrol-origin: content;\n"
+"    subcontrol-position: right center;\n"
+"\n"
+"    width: 28px;\n"
+"    border-left: 1px solid #1f6f7a;\n"
+""
+                        "    margin: 0;\n"
+"    padding: 0;\n"
+"}\n"
+"\n"
+"/* Sin icono */\n"
+"QDateEdit::down-arrow {\n"
+"    image: none;\n"
+"}\n"
+"\n"
+"\n"
+"\n"
+"/* =========================================\n"
+"   CALENDARIO \u2013 AZUL PETR\u00d3LEO (CUERPO)\n"
+"========================================= */\n"
+"\n"
+"QCalendarWidget {\n"
+"    background-color: #123b44;\n"
+"    color: #ecfeff;\n"
+"    border: 1px solid #1f6f7a;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"/* Barra superior (mes / a\u00f1o) */\n"
+"QCalendarWidget QWidget {\n"
+"    background-color: #155e6a;\n"
+"}\n"
+"\n"
+"/* Botones navegaci\u00f3n */\n"
+"QCalendarWidget QToolButton {\n"
+"    background-color: #0f3a43;\n"
+"    color: #ecfeff;\n"
+"    border: 1px solid #1f6f7a;\n"
+"    border-radius: 6px;\n"
+"\n"
+"    padding: 2px 6px;\n"
+"    margin: 2px;\n"
+"\n"
+"    min-width: 20px;\n"
+"    min-height: 20px;\n"
+"}\n"
+"\n"
+"QCalendarWidget QToolButton:hover {\n"
+"    background-color: #155e6a;\n"
+"    border-color: #22d3ee;\n"
+"}\n"
+"\n"
+"/* Combo mes / a\u00f1o */\n"
+""
+                        "QCalendarWidget QComboBox {\n"
+"    background-color: #0f3a43;\n"
+"    color: #ecfeff;\n"
+"    border: 1px solid #1f6f7a;\n"
+"    border-radius: 6px;\n"
+"\n"
+"    padding: 2px 6px;\n"
+"    min-height: 22px;\n"
+"    font-size: 12px;\n"
+"}\n"
+"\n"
+"\n"
+"\n"
+"/* =========================================\n"
+"   CALENDARIO \u2013 CUERPO DE D\u00cdAS\n"
+"========================================= */\n"
+"\n"
+"QCalendarWidget QAbstractItemView {\n"
+"    background-color: #123b44;\n"
+"    color: #d9f5f8;\n"
+"\n"
+"    selection-background-color: #22d3ee;\n"
+"    selection-color: #041518;\n"
+"\n"
+"    font-size: 11px;\n"
+"    outline: none;\n"
+"}\n"
+"\n"
+"/* Celdas */\n"
+"QCalendarWidget QAbstractItemView::item {\n"
+"    padding: 3px;\n"
+"}\n"
+"\n"
+"/* Hover d\u00eda */\n"
+"QCalendarWidget QAbstractItemView::item:hover {\n"
+"    background-color: #155e6a;\n"
+"}\n"
+"\n"
+"/* D\u00eda seleccionado */\n"
+"QCalendarWidget QAbstractItemView::item:selected {\n"
+"    background-color: #22d3ee;\n"
+"    color: #041518;\n"
+"    bord"
+                        "er-radius: 4px;\n"
+"}\n"
+"\n"
+"/* Fines de semana */\n"
+"QCalendarWidget QAbstractItemView::item:!enabled {\n"
+"    color: #fb7185;\n"
+"}\n"
+"\n"
+"\n"
+"\n"
+"/* =========================================\n"
+"   CALENDARIO \u2013 CABECERAS\n"
+"========================================= */\n"
+"\n"
+"/* Cabecera superior (lu ma mi...) */\n"
+"QCalendarWidget QHeaderView::section {\n"
+"    background-color: #155e6a;\n"
+"    color: #7dd3fc;\n"
+"    padding: 3px;\n"
+"    border: none;\n"
+"    font-size: 11px;\n"
+"}\n"
+"\n"
+"/* \ud83d\udd11 BARRA LATERAL IZQUIERDA (NEGRA) */\n"
+"QCalendarWidget QHeaderView::section:vertical {\n"
+"    background-color: #020617;   /* negro elegante */\n"
+"    color: #7dd3fc;\n"
+"    border: none;\n"
+"    padding: 4px;\n"
+"    font-size: 11px;\n"
+"}\n"
+"")
         self.dateNacimiento.setCalendarPopup(True)
+
         self.vboxLayout.addWidget(self.dateNacimiento)
 
+        self.comboCiudad = QComboBox(RegistroView)
+        self.comboCiudad.setObjectName(u"comboCiudad")
+        self.comboCiudad.setStyleSheet(u"QComboBox {\n"
+"    background-color: #0f3a43;\n"
+"    color: #ecfeff;\n"
+"    border: 1px solid #1f6f7a;\n"
+"    border-radius: 12px;\n"
+"\n"
+"    padding: 2px 8px;          /* \u2b05\ufe0f 1px menos */\n"
+"    padding-right: 32px;\n"
+"\n"
+"    font-size: 12px;\n"
+"    min-height: 34px;           /* \u2b05\ufe0f antes 38 */\n"
+"}\n"
+"\n"
+"/* =========================================\n"
+"   COMBOBOX \u2013 DESPLEGABLE AJUSTADO A ESTE TAMA\u00d1O\n"
+"========================================= */\n"
+"\n"
+"QComboBox::drop-down {\n"
+"    subcontrol-origin: content;\n"
+"    subcontrol-position: right center;\n"
+"    width: 28px;\n"
+"    border-left: 1px solid #1f6f7a;\n"
+"}\n"
+"\n"
+"/* Quitamos la flecha por est\u00e9tica */\n"
+"QComboBox::down-arrow {\n"
+"    image: none;\n"
+"}\n"
+"\n"
+"/* Lista desplegable */\n"
+"QComboBox QAbstractItemView {\n"
+"    background-color: #0b2a30;\n"
+"    color: #cfe9ee;\n"
+"\n"
+"    border: 1px solid #155e75;\n"
+"    border-radius: 8px;\n"
+"\n"
+"    max-height: 110px;          /* \ud83d"
+                        "\udd11 CLAVE */\n"
+"    padding: 2px;\n"
+"\n"
+"    selection-background-color: #22d3ee;\n"
+"    selection-color: #041518;\n"
+"\n"
+"    outline: none;\n"
+"}\n"
+"\n"
+"/* Items */\n"
+"QComboBox QAbstractItemView::item {\n"
+"    padding: 2px 8px;           /* compacto */\n"
+"    min-height: 20px;\n"
+"}\n"
+"\n"
+"/* Hover */\n"
+"QComboBox QAbstractItemView::item:hover {\n"
+"    background-color: #155e6a;\n"
+"    color: #ecfeff;\n"
+"}\n"
+"\n"
+"/* Seleccionado */\n"
+"QComboBox QAbstractItemView::item:selected {\n"
+"    background-color: #22d3ee;\n"
+"    color: #041518;\n"
+"}\n"
+"\n"
+"QComboBox:focus {\n"
+"    background-color: #155e6a;\n"
+"    border: 1px solid #22d3ee;   /* MISMO GROSOR */\n"
+"}")
+        self.comboCiudad.setSizeAdjustPolicy(QComboBox.SizeAdjustPolicy.AdjustToContents)
+
+        self.vboxLayout.addWidget(self.comboCiudad)
+
         self.inputPassword = QLineEdit(RegistroView)
-        self.inputPassword.setObjectName("inputPassword")
-        self.inputPassword.setEchoMode(QLineEdit.Password)
+        self.inputPassword.setObjectName(u"inputPassword")
+        self.inputPassword.setStyleSheet(u"/* =========================================\n"
+"   ENTRADAS DE TEXTO \u2013 CONTRASTE AZUL PETR\u00d3LEO\n"
+"========================================= */\n"
+"\n"
+"QLineEdit {\n"
+"    background-color: #0f3a43;        /* M\u00c1S CLARO que el fondo */\n"
+"    color: #ecfeff;\n"
+"    border: 1px solid #1f6f7a;\n"
+"    border-radius: 12px;\n"
+"    padding: 11px 16px;\n"
+"    font-size: 14px;\n"
+"    selection-background-color: #22d3ee;\n"
+"    selection-color: #041518;\n"
+"}\n"
+"\n"
+"/* Placeholder */\n"
+"QLineEdit::placeholder {\n"
+"    color: #9adce6;\n"
+"}\n"
+"\n"
+"/* Hover */\n"
+"QLineEdit:hover {\n"
+"    border-color: #22d3ee;\n"
+"    background-color: #134852;\n"
+"}\n"
+"\n"
+"/* Focus: contraste fuerte pero elegante */\n"
+"QLineEdit:focus {\n"
+"    background-color: #155e6a;\n"
+"    border: 2px solid #22d3ee;\n"
+"}\n"
+"")
+        self.inputPassword.setEchoMode(QLineEdit.EchoMode.Password)
+
         self.vboxLayout.addWidget(self.inputPassword)
 
         self.inputPassword2 = QLineEdit(RegistroView)
-        self.inputPassword2.setObjectName("inputPassword2")
-        self.inputPassword2.setEchoMode(QLineEdit.Password)
+        self.inputPassword2.setObjectName(u"inputPassword2")
+        self.inputPassword2.setStyleSheet(u"/* =========================================\n"
+"   ENTRADAS DE TEXTO \u2013 CONTRASTE AZUL PETR\u00d3LEO\n"
+"========================================= */\n"
+"\n"
+"QLineEdit {\n"
+"    background-color: #0f3a43;        /* M\u00c1S CLARO que el fondo */\n"
+"    color: #ecfeff;\n"
+"    border: 1px solid #1f6f7a;\n"
+"    border-radius: 12px;\n"
+"    padding: 11px 16px;\n"
+"    font-size: 14px;\n"
+"    selection-background-color: #22d3ee;\n"
+"    selection-color: #041518;\n"
+"}\n"
+"\n"
+"/* Placeholder */\n"
+"QLineEdit::placeholder {\n"
+"    color: #9adce6;\n"
+"}\n"
+"\n"
+"/* Hover */\n"
+"QLineEdit:hover {\n"
+"    border-color: #22d3ee;\n"
+"    background-color: #134852;\n"
+"}\n"
+"\n"
+"/* Focus: contraste fuerte pero elegante */\n"
+"QLineEdit:focus {\n"
+"    background-color: #155e6a;\n"
+"    border: 2px solid #22d3ee;\n"
+"}\n"
+"")
+        self.inputPassword2.setEchoMode(QLineEdit.EchoMode.Password)
+
         self.vboxLayout.addWidget(self.inputPassword2)
 
         self.labelMensaje = QLabel(RegistroView)
-        self.labelMensaje.setObjectName("labelMensaje")
+        self.labelMensaje.setObjectName(u"labelMensaje")
         self.labelMensaje.setVisible(False)
-        self.labelMensaje.setAlignment(Qt.AlignCenter)
+
         self.vboxLayout.addWidget(self.labelMensaje)
 
         self.btnRegistrarse = QPushButton(RegistroView)
-        self.btnRegistrarse.setObjectName("btnRegistrarse")
+        self.btnRegistrarse.setObjectName(u"btnRegistrarse")
+        self.btnRegistrarse.setStyleSheet(u"/* =========================================\n"
+"   BOT\u00d3N ALTERNATIVO \u2013 BLANCO AZULADO\n"
+"========================================= */\n"
+"\n"
+"QPushButton {\n"
+"    background-color: #f1f5f9;      /* blanco azulado suave */\n"
+"    color: #0f3a43;                 /* azul petr\u00f3leo oscuro */\n"
+"\n"
+"    border: 1px solid #22d3ee;\n"
+"    border-radius: 12px;\n"
+"\n"
+"    padding: 10px 18px;\n"
+"    font-size: 14px;\n"
+"    font-weight: 600;\n"
+"}\n"
+"\n"
+"/* Hover */\n"
+"QPushButton:hover {\n"
+"    background-color: #e0f2fe;      /* azul muy claro */\n"
+"    color: #0b2a30;\n"
+"    border-color: #22d3ee;\n"
+"}\n"
+"\n"
+"/* Presionado */\n"
+"QPushButton:pressed {\n"
+"    background-color: #bae6fd;\n"
+"    border-color: #06b6d4;\n"
+"}\n"
+"\n"
+"/* Desactivado */\n"
+"QPushButton:disabled {\n"
+"    background-color: #e5e7eb;\n"
+"    color: #64748b;\n"
+"    border-color: #94a3b8;\n"
+"}\n"
+"")
+
         self.vboxLayout.addWidget(self.btnRegistrarse)
 
         self.btnIrLogin = QPushButton(RegistroView)
-        self.btnIrLogin.setObjectName("btnIrLogin")
+        self.btnIrLogin.setObjectName(u"btnIrLogin")
+        self.btnIrLogin.setStyleSheet(u"/* =========================================\n"
+"   BOT\u00d3N ALTERNATIVO \u2013 BLANCO AZULADO\n"
+"========================================= */\n"
+"\n"
+"QPushButton {\n"
+"    background-color: #f1f5f9;      /* blanco azulado suave */\n"
+"    color: #0f3a43;                 /* azul petr\u00f3leo oscuro */\n"
+"\n"
+"    border: 1px solid #22d3ee;\n"
+"    border-radius: 12px;\n"
+"\n"
+"    padding: 10px 18px;\n"
+"    font-size: 14px;\n"
+"    font-weight: 600;\n"
+"}\n"
+"\n"
+"/* Hover */\n"
+"QPushButton:hover {\n"
+"    background-color: #e0f2fe;      /* azul muy claro */\n"
+"    color: #0b2a30;\n"
+"    border-color: #22d3ee;\n"
+"}\n"
+"\n"
+"/* Presionado */\n"
+"QPushButton:pressed {\n"
+"    background-color: #bae6fd;\n"
+"    border-color: #06b6d4;\n"
+"}\n"
+"\n"
+"/* Desactivado */\n"
+"QPushButton:disabled {\n"
+"    background-color: #e5e7eb;\n"
+"    color: #64748b;\n"
+"    border-color: #94a3b8;\n"
+"}\n"
+"")
+
         self.vboxLayout.addWidget(self.btnIrLogin)
+
 
         self.retranslateUi(RegistroView)
 
+        QMetaObject.connectSlotsByName(RegistroView)
+    # setupUi
+
     def retranslateUi(self, RegistroView):
-        RegistroView.setWindowTitle(
-            QCoreApplication.translate("RegistroView", "Kilómetro a Kilómetro - Registro")
-        )
+        RegistroView.setWindowTitle(QCoreApplication.translate("RegistroView", u"Kil\u00f3metro a Kil\u00f3metro - Registro", None))
+        self.label.setText(QCoreApplication.translate("RegistroView", u"<html><head/><body><p>Registrar Usuario</p></body></html>", None))
+        self.inputNombre.setPlaceholderText(QCoreApplication.translate("RegistroView", u"Nombre", None))
+        self.inputApellidos.setPlaceholderText(QCoreApplication.translate("RegistroView", u"Apellidos", None))
+        self.inputUsername.setPlaceholderText(QCoreApplication.translate("RegistroView", u"Usuario", None))
+        self.inputEmail.setPlaceholderText(QCoreApplication.translate("RegistroView", u"Email", None))
+        self.inputTelefono.setPlaceholderText(QCoreApplication.translate("RegistroView", u"Tel\u00e9fono", None))
+        self.inputPassword.setPlaceholderText(QCoreApplication.translate("RegistroView", u"Contrase\u00f1a", None))
+        self.inputPassword2.setPlaceholderText(QCoreApplication.translate("RegistroView", u"Repetir contrase\u00f1a", None))
+        self.btnRegistrarse.setText(QCoreApplication.translate("RegistroView", u"Registrar", None))
+        self.btnIrLogin.setText(QCoreApplication.translate("RegistroView", u"Ya tengo cuenta", None))
+    # retranslateUi
 
-        RegistroView.setStyleSheet("""
-            QWidget {
-                background-color: #1b1b1b;
-                color: #eaeaea;
-                font-family: Segoe UI;
-            }
-            QLabel#labelTitulo {
-                color: #00c853;
-                margin-bottom: 10px;
-            }
-            QLineEdit, QComboBox, QDateEdit {
-                background-color: #2a2a2a;
-                border: 2px solid #3a3a3a;
-                border-radius: 6px;
-                padding: 8px;
-                font-size: 14px;
-            }
-            QPushButton {
-                background-color: #00c853;
-                border-radius: 8px;
-                padding: 12px;
-                font-weight: bold;
-                color: #000000;
-            }
-            QPushButton:hover {
-                background-color: #00e676;
-            }
-            QPushButton#btnIrLogin {
-                background-color: transparent;
-                color: #9e9e9e;
-                font-weight: normal;
-            }
-            QPushButton#btnIrLogin:hover {
-                color: #00e676;
-                text-decoration: underline;
-            }
-        """)
-
-        self.labelTitulo.setText(
-            QCoreApplication.translate("RegistroView", "Crear cuenta")
-        )
-        self.inputNombre.setPlaceholderText("Nombre")
-        self.inputApellidos.setPlaceholderText("Apellidos")
-        self.inputUsername.setPlaceholderText("Usuario")
-        self.inputEmail.setPlaceholderText("Email")
-        self.inputTelefono.setPlaceholderText("Teléfono")
-        self.inputPassword.setPlaceholderText("Contraseña")
-        self.inputPassword2.setPlaceholderText("Repetir contraseña")
-        self.btnRegistrarse.setText("Registrar")
-        self.btnIrLogin.setText("Ya tengo cuenta")

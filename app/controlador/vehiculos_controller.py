@@ -80,32 +80,67 @@ class VehiculosController:
     # ELIMINAR VEHÍCULO (CON CONFIRMACIÓN)
     # -----------------------
     def eliminar_vehiculo(self):
-        fila = self.ui.tablaVehiculos.currentRow()
+     fila = self.ui.tablaVehiculos.currentRow()
+     if fila < 0:
+        return
 
-        if fila < 0:
-            return
+     msg = QMessageBox(self.widget)
+     msg.setWindowTitle("Eliminar vehículo")
+     msg.setText(
+        "¿Seguro que quieres eliminar este vehículo?\n\n"
+        "Esta acción no se puede deshacer."
+     )
+     msg.setIcon(QMessageBox.Question)
 
-        respuesta = QMessageBox.question(
-            self.widget,
-            "Eliminar vehículo",
-            "¿Seguro que quieres eliminar este vehículo?\nEsta acción no se puede deshacer.",
-            QMessageBox.Yes | QMessageBox.No,
-            QMessageBox.No
-        )
+     msg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+     msg.setDefaultButton(QMessageBox.No)
 
-        if respuesta != QMessageBox.Yes:
-            return
+    # 🔑 ESTILO COHERENTE CON TU APP
+     msg.setStyleSheet("""
+     QMessageBox {
+        background-color: #081c20;
+        color: #ecfeff;
+        font-size: 13px;
+     }
 
-        vehiculo_id = self.vehiculos[fila][0]
+     QLabel {
+        color: #ecfeff;
+     }
 
-        self.service.eliminar(vehiculo_id)
+     QPushButton {
+        background-color: #0f3a43;
+        color: #ecfeff;
+        border: 1px solid #22d3ee;
+        border-radius: 8px;
+        padding: 6px 14px;
+        min-width: 90px;
+        font-weight: 600;
+     }
 
-        # Si el eliminado era el activo, lo limpiamos
-        if self.app.usuario.get("vehiculo_activo_id") == vehiculo_id:
-            self.service.limpiar_activo(self.app.usuario["id"])
-            self.app.usuario["vehiculo_activo_id"] = None
+     QPushButton:hover {
+        background-color: #155e6a;
+     }
 
-        self.cargar_tabla()
+     QPushButton:pressed {
+        background-color: #062023;
+     }
+    """)
+
+     respuesta = msg.exec()
+
+     if respuesta != QMessageBox.Yes:
+        return
+
+     vehiculo_id = self.vehiculos[fila][0]
+
+     self.service.eliminar(vehiculo_id)
+
+    # Si era el activo, limpiar
+     if self.app.usuario.get("vehiculo_activo_id") == vehiculo_id:
+        self.service.limpiar_activo(self.app.usuario["id"])
+        self.app.usuario["vehiculo_activo_id"] = None
+
+     self.cargar_tabla()
 
     # -----------------------
     # VOLVER AL MENÚ

@@ -56,4 +56,33 @@ class RepostajeRepository:
 
       con.commit()
       con.close()
+    
+    
+    def find_by_vehiculo_filtrado(self, vehiculo_id, mes=None, anio=None):
+     con = get_connection()
+     cur = con.cursor()
+
+     sql = """
+        SELECT id, fecha, litros, precio_total, kilometros
+        FROM repostajes
+        WHERE vehiculo_id = ?
+     """
+     params = [vehiculo_id]
+
+     if anio:
+        sql += " AND strftime('%Y', fecha) = ?"
+        params.append(str(anio))
+
+     if mes:
+        sql += " AND strftime('%m', fecha) = ?"
+        params.append(f"{int(mes):02d}")
+
+     sql += " ORDER BY fecha DESC"
+
+     cur.execute(sql, params)
+     datos = cur.fetchall()
+     con.close()
+     return datos
+  
+    
 

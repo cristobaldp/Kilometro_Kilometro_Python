@@ -12,9 +12,14 @@ class RegistroController:
 
         self.cargar_ciudades()
 
-        # Conexiones según la UI real
+        # Limitar tamaño del combo (MUY IMPORTANTE)
+        self.ui.comboCiudad.setMaxVisibleItems(5)
+
+        # Conexiones
         self.ui.btnRegistrarse.clicked.connect(self.registrar)
         self.ui.btnIrLogin.clicked.connect(self.app.mostrar_login)
+
+        self.ui.labelMensaje.setVisible(False)
 
     # -----------------------
     # VALIDACIONES
@@ -55,23 +60,18 @@ class RegistroController:
         password = self.ui.inputPassword.text()
         password2 = self.ui.inputPassword2.text()
 
-        # Campos obligatorios
         if not all([nombre, apellidos, username, email, telefono, password, password2]):
             return self._error("Rellena todos los campos")
 
-        # Email
         if not self.email_valido(email):
             return self._error("Email no válido (@gmail, @outlook, @hotmail)")
 
-        # Teléfono
         if not self.telefono_valido(telefono):
             return self._error("Teléfono inválido (9 dígitos)")
 
-        # Ciudad
         if ciudad == "Selecciona ciudad":
             return self._error("Selecciona una ciudad")
 
-        # Contraseñas
         if password != password2:
             return self._error("Las contraseñas no coinciden")
 
@@ -91,7 +91,6 @@ class RegistroController:
         if not usuario:
             return self._error("El usuario ya existe")
 
-        # ✅ ÉXITO → MENSAJE Y LOGIN
         QMessageBox.information(
             self.widget,
             "Registro completado",
@@ -101,6 +100,11 @@ class RegistroController:
         self.app.mostrar_login()
 
     # -----------------------
+    # MENSAJE ERROR
+    # -----------------------
     def _error(self, mensaje):
         self.ui.labelMensaje.setText(mensaje)
+        self.ui.labelMensaje.setObjectName("mensajeError")
         self.ui.labelMensaje.setVisible(True)
+        self.ui.labelMensaje.style().unpolish(self.ui.labelMensaje)
+        self.ui.labelMensaje.style().polish(self.ui.labelMensaje)

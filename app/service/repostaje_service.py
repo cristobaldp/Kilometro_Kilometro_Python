@@ -27,3 +27,11 @@ class RepostajeService:
     def obtener_para_exportar(self, vehiculo_id):
         return self.repo.find_by_vehiculo(vehiculo_id)
     
+    def listar_filtrado(self, vehiculo_id, mes=None, anio=None):
+     return self.repo.find_by_vehiculo_filtrado(
+        vehiculo_id,
+        mes,
+        anio
+     )
+
+    

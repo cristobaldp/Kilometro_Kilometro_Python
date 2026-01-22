@@ -5,6 +5,7 @@ from matplotlib.figure import Figure
 import matplotlib.dates as mdates
 from datetime import datetime
 import csv
+from PySide6.QtCore import Qt
 
 from app.vista.estadisticas_ui import Ui_EstadisticasView
 from app.repository.estadisticas_repository import EstadisticasRepository
@@ -28,6 +29,9 @@ class EstadisticasController:
         self.widget = QWidget()
         self.ui = Ui_EstadisticasView()
         self.ui.setupUi(self.widget)
+        
+        self._ajustar_combos()
+
 
         self._init_graficas()
 
@@ -380,6 +384,21 @@ class EstadisticasController:
                 writer.writerow([r["fecha"], r["litros"], r["kilometros"]])
 
         QMessageBox.information(self.widget, "CSV", "CSV exportado correctamente")
+        
+    # =================================================
+# AJUSTE COMBOS (ANTI-TAPADO)
+# =================================================
+    def _ajustar_combos(self):
+     combos = [
+        self.ui.comboMes,
+        self.ui.comboAnio
+     ]
+
+     for combo in combos:
+        combo.setMaxVisibleItems(5)
+        combo.view().setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+        combo.view().setMinimumWidth(combo.width())
+
 
     def volver_menu(self):
         self.app.mostrar_menu(self.app.usuario)

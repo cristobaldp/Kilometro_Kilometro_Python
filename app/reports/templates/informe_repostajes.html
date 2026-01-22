@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Informe de Repostajes</title>
+    <link rel="stylesheet" href="informe_repostajes.css">
+</head>
+<body>
+
+    <!-- CABECERA -->
+    <header>
+        <h1>INFORME DE REPOSTAJES</h1>
+        <p><strong>Fecha de generación:</strong> {{ fecha_generacion }}</p>
+        <p><strong>Periodo:</strong> {{ periodo }}</p>
+    </header>
+
+    <!-- USUARIO -->
+    <section>
+        <h2>Datos del usuario</h2>
+        <div class="bloque">
+            {{ usuario }}
+        </div>
+    </section>
+
+    <!-- VEHÍCULO -->
+    <section>
+        <h2>Datos del vehículo</h2>
+        <div class="bloque">
+            {{ vehiculo }}
+        </div>
+    </section>
+
+    <!-- TABLA REPOSTAJES -->
+    <section>
+        <h2>Repostajes</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Litros</th>
+                    <th>Precio (€)</th>
+                    <th>Kilómetros</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{ filas_repostajes }}
+            </tbody>
+        </table>
+    </section>
+
+    <!-- RESUMEN -->
+    <section>
+        <h2>Resumen</h2>
+        <div class="resumen">
+            {{ resumen }}
+        </div>
+    </section>
+
+    <!-- PIE -->
+    <footer>
+        Informe generado por la aplicación <strong>Kilómetro a Kilómetro</strong>
+    </footer>
+
+</body>
+</html>

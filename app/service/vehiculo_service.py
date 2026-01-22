@@ -44,3 +44,10 @@ class VehiculoService:
     # -------------------------
     def quitar_activo(self, user_id):
         return self.repo.clear_activo(user_id)
+    
+    # -------------------------
+# OBTENER VEHÍCULO POR ID
+# -------------------------
+    def obtener_por_id(self, vehiculo_id):
+     return self.repo.find_by_id(vehiculo_id)
+

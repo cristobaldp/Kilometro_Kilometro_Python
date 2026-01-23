@@ -4,7 +4,13 @@ from weasyprint import HTML, CSS
 
 
 class InformeRepostajesPDF:
+    """
+    Genera un informe PDF profesional de repostajes.
+    El consumo medio se calcula como:
+    (litros totales / km recorridos reales) * 100
+    """
 
+    # ==================================================
     @staticmethod
     def generar(
         output_path: str,
@@ -14,25 +20,29 @@ class InformeRepostajesPDF:
         periodo: str = "Todos los repostajes"
     ):
         """
-        Genera un informe PDF profesional de repostajes.
+        Genera el PDF del listado de repostajes.
+        repostajes: lista de tuplas
+        (id, fecha, litros, precio, kilometros)
         """
 
         # =============================
         # CARGA DE PLANTILLAS
         base_path = Path(__file__).parent
-        html_template = (base_path / "templates" / "informe_repostajes.html") \
-            .read_text(encoding="utf-8")
+        html_template = (
+            base_path / "templates" / "informe_repostajes.html"
+        ).read_text(encoding="utf-8")
         css_path = base_path / "templates" / "informe_repostajes.css"
 
         # =============================
-        # PREPARAR DATOS
+        # DATOS GENERALES
         fecha_generacion = datetime.now().strftime("%d/%m/%Y")
 
         usuario_html = InformeRepostajesPDF._dict_to_html(usuario)
         vehiculo_html = InformeRepostajesPDF._dict_to_html(vehiculo)
 
-        filas_html, resumen_html = \
+        filas_html, resumen_html = (
             InformeRepostajesPDF._procesar_repostajes(repostajes)
+        )
 
         # =============================
         # RELLENAR HTML
@@ -53,65 +63,70 @@ class InformeRepostajesPDF:
             stylesheets=[CSS(filename=str(css_path))]
         )
 
-    # ------------------------------------------------
+    # ==================================================
     @staticmethod
     def _dict_to_html(data: dict) -> str:
         """
-        Convierte un diccionario en líneas HTML <br>
+        Convierte un diccionario en HTML con saltos de línea
         """
         return "<br>".join(
-            f"<strong>{k}:</strong> {v}" for k, v in data.items()
+            f"<strong>{k}:</strong> {v}"
+            for k, v in data.items()
+            if v is not None
         )
 
-    # ------------------------------------------------
+    # ==================================================
     @staticmethod
     def _procesar_repostajes(repostajes: list):
+     """
+     Genera filas HTML y resumen.
+    Consumo medio calculado EXACTAMENTE igual que en Android.
+     """
+
+     filas = ""
+     total_precio = 0.0
+
+     litros_totales = 0.0
+     km_totales = 0.0
+
+    # repostajes = [(id, fecha, litros, precio, km), ...]
+     repostajes_ordenados = sorted(repostajes, key=lambda r: r[4])
+
+     for _, fecha, litros, precio, km in repostajes_ordenados:
+        filas += f"""
+            <tr>
+                <td>{fecha}</td>
+                <td>{litros:.2f}</td>
+                <td>{precio:.2f} €</td>
+                <td>{km} km</td>
+            </tr>
         """
-        Genera filas de la tabla y resumen con consumo medio.
-        """
-        filas = ""
-        total_litros = 0.0
-        total_precio = 0.0
+        total_precio += precio
 
-        kms = []
+    # =============================
+    # CONSUMO MEDIO (TRAMO A TRAMO)
+     for i in range(1, len(repostajes_ordenados)):
+        ant = repostajes_ordenados[i - 1]
+        act = repostajes_ordenados[i]
 
-        for _, fecha, litros, precio, km in repostajes:
-            filas += f"""
-                <tr>
-                    <td>{fecha}</td>
-                    <td>{litros:.2f}</td>
-                    <td>{precio:.2f}</td>
-                    <td>{km}</td>
-                </tr>
-            """
-            total_litros += litros
-            total_precio += precio
-            kms.append(km)
+        km = act[4] - ant[4]
 
-        # =============================
-        # CÁLCULOS
-        num_repostajes = len(repostajes)
-        media_precio = (
-            total_precio / num_repostajes
-            if num_repostajes > 0 else 0
-        )
+        # mismo filtro que Android
+        if 1 <= km <= 1500:
+            litros_totales += ant[2]
+            km_totales += km
 
+     if km_totales > 0:
+        consumo_medio = f"{(litros_totales / km_totales) * 100:.2f} L/100km"
+     else:
         consumo_medio = "No disponible"
-        if len(kms) >= 2:
-            km_recorridos = max(kms) - min(kms)
-            if km_recorridos > 0:
-                consumo_medio = (
-                    f"{(total_litros / km_recorridos) * 100:.2f} L/100km"
-                )
 
-        # =============================
-        # RESUMEN HTML
-        resumen = f"""
-            Nº de repostajes: {num_repostajes}<br>
-            Total litros: {total_litros:.2f} L<br>
-            Total gastado: {total_precio:.2f} €<br>
-            Media por repostaje: {media_precio:.2f} €<br>
-            Consumo medio: {consumo_medio}
-        """
+    # =============================
+    # RESUMEN
+     resumen = f"""
+        <strong>Nº de repostajes:</strong> {len(repostajes_ordenados)}<br>
+        <strong>Total gastado:</strong> {total_precio:.2f} €<br>
+        <strong>Consumo medio:</strong> {consumo_medio}
+     """
 
-        return filas, resumen
+     return filas, resumen

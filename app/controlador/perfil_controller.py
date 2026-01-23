@@ -23,6 +23,50 @@ class PerfilController:
 
         self.ui.labelMensaje.setVisible(False)
 
+    # =================================================
+    # ESTILO MESSAGEBOX
+    # =================================================
+    def _estilo_msgbox(self):
+        return """
+        QMessageBox {
+            background-color: #081c20;
+            color: #ecfeff;
+            font-size: 13px;
+        }
+        QLabel {
+            color: #ecfeff;
+        }
+        QPushButton {
+            background-color: #0f3a43;
+            color: #ecfeff;
+            border: 1px solid #22d3ee;
+            border-radius: 8px;
+            padding: 6px 14px;
+            min-width: 90px;
+            font-weight: 600;
+        }
+        QPushButton:hover {
+            background-color: #155e6a;
+        }
+        """
+
+    def _msgbox(self, icono, titulo, texto):
+        msg = QMessageBox(self.widget)
+        msg.setIcon(icono)
+        msg.setWindowTitle(titulo)
+        msg.setText(texto)
+        msg.setStyleSheet(self._estilo_msgbox())
+        msg.exec()
+
+    def _confirmar(self, texto):
+        msg = QMessageBox(self.widget)
+        msg.setIcon(QMessageBox.Question)
+        msg.setWindowTitle("Confirmar")
+        msg.setText(texto)
+        msg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+        msg.setStyleSheet(self._estilo_msgbox())
+        return msg.exec() == QMessageBox.Yes
+
     # -------------------------------------------------
     # CARGAR DATOS
     # -------------------------------------------------
@@ -89,7 +133,7 @@ class PerfilController:
         self.ui.btnGuardar.setEnabled(True)
 
     # -------------------------------------------------
-    # GUARDAR PERFIL (VALIDADO)
+    # GUARDAR PERFIL
     # -------------------------------------------------
     def guardar(self):
         self.ocultar_mensaje()
@@ -100,19 +144,14 @@ class PerfilController:
         telefono = self.ui.inputTelefono.text().strip()
         ciudad = self.ui.inputCiudad.text().strip()
 
-        # 🔒 VALIDACIONES OBLIGATORIAS
         if not nombre:
             return self.mostrar_error("El nombre no puede estar vacío")
-
         if not apellidos:
             return self.mostrar_error("Los apellidos no pueden estar vacíos")
-
         if not email:
             return self.mostrar_error("El email no puede estar vacío")
-
         if not ciudad:
             return self.mostrar_error("La ciudad no puede estar vacía")
-
         if not telefono.isdigit() or len(telefono) != 9:
             return self.mostrar_error("Teléfono inválido (9 dígitos)")
 
@@ -129,8 +168,8 @@ class PerfilController:
             self.service.actualizar_perfil(datos)
             self.app.usuario.update(datos)
 
-            QMessageBox.information(
-                self.widget,
+            self._msgbox(
+                QMessageBox.Information,
                 "Perfil",
                 "Datos actualizados correctamente"
             )
@@ -152,18 +191,16 @@ class PerfilController:
 
         if not p1 or not p2:
             return self.mostrar_error("Rellena ambas contraseñas")
-
         if p1 != p2:
             return self.mostrar_error("Las contraseñas no coinciden")
-
         if len(p1) < 4:
             return self.mostrar_error("Mínimo 4 caracteres")
 
         try:
             self.service.cambiar_password(self.app.usuario["id"], p1)
 
-            QMessageBox.information(
-                self.widget,
+            self._msgbox(
+                QMessageBox.Information,
                 "Contraseña",
                 "Contraseña actualizada correctamente"
             )
@@ -178,15 +215,10 @@ class PerfilController:
     # ELIMINAR CUENTA
     # -------------------------------------------------
     def eliminar_cuenta(self):
-        resp = QMessageBox.question(
-            self.widget,
-            "Confirmar",
+        if self._confirmar(
             "¿Seguro que deseas eliminar tu cuenta?\n\n"
-            "Esta acción no se puede deshacer.",
-            QMessageBox.Yes | QMessageBox.No
-        )
-
-        if resp == QMessageBox.Yes:
+            "Esta acción no se puede deshacer."
+        ):
             self.service.eliminar_cuenta(self.app.usuario["id"])
             self.app.usuario = None
             self.app.mostrar_login()
@@ -198,16 +230,14 @@ class PerfilController:
         self.app.mostrar_menu(self.app.usuario)
 
     # -------------------------------------------------
-    # MENSAJES
+    # MENSAJES INLINE
     # -------------------------------------------------
     def mostrar_error(self, texto):
         lbl = self.ui.labelMensaje
         lbl.setText(texto)
         lbl.setObjectName("mensajeError")
-
         lbl.style().unpolish(lbl)
         lbl.style().polish(lbl)
-
         lbl.setVisible(True)
 
     def ocultar_mensaje(self):

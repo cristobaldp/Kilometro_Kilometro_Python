@@ -26,16 +26,18 @@ class RepostajesController:
         self.ui = Ui_RepostajesView()
         self.ui.setupUi(self.widget)
 
-        self._configurar_combos()
-        self._conectar_eventos()
-
         self._datos_filtrados = None
         self._periodo_actual = "Todos los repostajes"
+
+        self._configurar_combos()
+        self._conectar_eventos()
 
         self.cargar_repostajes()
         self.app._mostrar(self.widget)
 
-    # ---------------------------------
+    # =================================================
+    # CONFIG
+    # =================================================
     def _configurar_combos(self):
         for combo in (self.ui.comboMes, self.ui.comboAnio):
             combo.setMaxVisibleItems(6)
@@ -49,7 +51,9 @@ class RepostajesController:
         self.ui.btnExportCSV.clicked.connect(self.exportar_csv)
         self.ui.btnExportPDF.clicked.connect(self.exportar_pdf)
 
-    # ---------------------------------
+    # =================================================
+    # CARGA / FILTRO
+    # =================================================
     def cargar_repostajes(self):
         datos = self.service.listar(self.vehiculo_id)
         self._datos_filtrados = None
@@ -68,7 +72,6 @@ class RepostajesController:
 
         self.ui.tablaRepostajes.setColumnHidden(0, True)
 
-    # ---------------------------------
     def buscar_por_fecha(self):
         mes, anio, periodo = self._obtener_filtro_fecha()
 
@@ -105,11 +108,12 @@ class RepostajesController:
 
         return mes, anio, periodo
 
-    # ---------------------------------
+    # =================================================
+    # ACCIONES
+    # =================================================
     def nuevo_repostaje(self):
         self.app.mostrar_add_repostaje()
 
-    # ---------------------------------
     def eliminar_repostaje(self):
         fila = self.ui.tablaRepostajes.currentRow()
         if fila == -1:
@@ -122,76 +126,101 @@ class RepostajesController:
             self.service.eliminar(repostaje_id)
             self.cargar_repostajes()
 
-    # ---------------------------------
+    # =================================================
+    # EXPORTAR CSV (CORREGIDO)
+    # =================================================
     def exportar_csv(self):
+
+        # 🔹 Datos a exportar
+        datos = (
+            self._datos_filtrados
+            if self._datos_filtrados is not None
+            else self.service.listar(self.vehiculo_id)
+        )
+
+        if not datos:
+            self._msg(
+                "CSV",
+                "No hay repostajes para exportar en el período seleccionado",
+                QMessageBox.Warning
+            )
+            return
+
+        ruta, _ = QFileDialog.getSaveFileName(
+            self.widget,
+            "Exportar CSV",
+            "",
+            "CSV (*.csv)"
+        )
+        if not ruta:
+            return
+
+        with open(ruta, "w", newline="", encoding="utf-8") as f:
+            writer = csv.writer(f, delimiter=";")
+            writer.writerow(
+                ["Fecha", "Litros", "Kilómetros", "Precio (€)"]
+            )
+            for r in datos:
+                writer.writerow([
+                    r[1],  # fecha
+                    r[2],  # litros
+                    r[3],  # km
+                    r[4]   # precio
+                ])
+
+        self._msg("CSV", "CSV exportado correctamente", QMessageBox.Information)
+
+    # =================================================
+    # EXPORTAR PDF
+    # =================================================
+    def exportar_pdf(self):
         path, _ = QFileDialog.getSaveFileName(
-            self.widget, "Guardar CSV", "", "CSV (*.csv)"
+            self.widget, "Guardar PDF", "", "PDF (*.pdf)"
         )
         if not path:
             return
 
-        datos = self._datos_filtrados
-        if datos is None:
-            datos = self.service.obtener_para_exportar(self.vehiculo_id)
-
-        with open(path, "w", newline="", encoding="utf-8") as f:
-            writer = csv.writer(f)
-            writer.writerow(["Fecha", "Litros", "Precio", "Kilómetros"])
-            for _, fecha, litros, precio, km in datos:
-                writer.writerow([fecha, litros, precio, km])
-
-        self._msg("CSV", "Exportado correctamente", QMessageBox.Information)
-
-    # ---------------------------------
-    def exportar_pdf(self):
-     path, _ = QFileDialog.getSaveFileName(
-        self.widget, "Guardar PDF", "", "PDF (*.pdf)"
-     )
-     if not path:
-        return
-
-    # Datos (filtrados o completos)
-     datos = self._datos_filtrados
-     if datos is None:
-        datos = self.service.obtener_para_exportar(self.vehiculo_id)
-
-    # Datos del usuario (limpios y presentables)
-     usuario = {
-        "Nombre": self.app.usuario.get("nombre"),
-        "Apellidos": self.app.usuario.get("apellidos"),
-        "Nombre de usuario": self.app.usuario.get("username"),
-        "Email": self.app.usuario.get("email"),
-        "Teléfono": self.app.usuario.get("telefono"),
-        "Ciudad": self.app.usuario.get("ciudad")
-     }
-
-    # Vehículo activo
-     vehiculo = self.vehiculo_service.obtener_por_id(self.vehiculo_id)
-     if not vehiculo:
-        self._msg(
-            "PDF",
-            "No se pudo obtener la información del vehículo",
-            QMessageBox.Warning
+        datos = (
+            self._datos_filtrados
+            if self._datos_filtrados is not None
+            else self.service.obtener_para_exportar(self.vehiculo_id)
         )
-        return
 
-    # Generar informe
-     InformeRepostajesPDF.generar(
-        path,
-        usuario,
-        vehiculo,
-        datos,
-        self._periodo_actual
-     )
+        if not datos:
+            self._msg("PDF", "No hay datos para generar el informe", QMessageBox.Warning)
+            return
 
-     self._msg("PDF", "Informe generado correctamente", QMessageBox.Information)
+        usuario = {
+            "Nombre": self.app.usuario.get("nombre"),
+            "Apellidos": self.app.usuario.get("apellidos"),
+            "Usuario": self.app.usuario.get("username"),
+            "Email": self.app.usuario.get("email"),
+            "Teléfono": self.app.usuario.get("telefono"),
+            "Ciudad": self.app.usuario.get("ciudad")
+        }
 
+        vehiculo = self.vehiculo_service.obtener_por_id(self.vehiculo_id)
+        if not vehiculo:
+            self._msg("PDF", "No se pudo obtener el vehículo", QMessageBox.Warning)
+            return
 
-    # ---------------------------------
+        InformeRepostajesPDF.generar(
+            path,
+            usuario,
+            vehiculo,
+            datos,
+            self._periodo_actual
+        )
+
+        self._msg("PDF", "Informe generado correctamente", QMessageBox.Information)
+
+    # =================================================
     def volver_menu(self):
         self.app.mostrar_menu(self.app.usuario)
 
-    # ---------------------------------
+    # =================================================
+    # MENSAJES CON ESTILO
+    # =================================================
     def _mostrar_aviso_vehiculo(self):
         self._msg(
             "Atención",

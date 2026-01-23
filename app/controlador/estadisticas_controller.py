@@ -22,8 +22,8 @@ class EstadisticasController:
 
         self.vehiculo_id = self.app.usuario.get("vehiculo_activo_id")
         if not self.vehiculo_id:
-            QMessageBox.warning(
-                None,
+            self._msgbox(
+                QMessageBox.Warning,
                 "Estadísticas",
                 "Selecciona un vehículo activo primero"
             )
@@ -42,6 +42,8 @@ class EstadisticasController:
         self.repostajes = []
         self.metricas = {}
 
+        self._primer_carga = True  # ✅ FLAG CORRECTO
+
         self.ui.btnFiltrar.clicked.connect(self.actualizar)
         self.ui.btnExportPDF.clicked.connect(self.exportar_pdf)
         self.ui.btnExportCSV.clicked.connect(self.exportar_csv)
@@ -49,6 +51,41 @@ class EstadisticasController:
 
         self.actualizar()
         self.app._mostrar(self.widget)
+
+    # =================================================
+    # MENSAJES CON ESTILO
+    # =================================================
+    def _estilo_msgbox(self):
+        return """
+        QMessageBox {
+            background-color: #081c20;
+            color: #ecfeff;
+            font-size: 13px;
+        }
+        QLabel {
+            color: #ecfeff;
+        }
+        QPushButton {
+            background-color: #0f3a43;
+            color: #ecfeff;
+            border: 1px solid #22d3ee;
+            border-radius: 8px;
+            padding: 6px 14px;
+            min-width: 90px;
+            font-weight: 600;
+        }
+        QPushButton:hover {
+            background-color: #155e6a;
+        }
+        """
+
+    def _msgbox(self, tipo, titulo, texto):
+        msg = QMessageBox(self.widget)
+        msg.setIcon(tipo)
+        msg.setWindowTitle(titulo)
+        msg.setText(texto)
+        msg.setStyleSheet(self._estilo_msgbox())
+        msg.exec()
 
     # =================================================
     # GRÁFICAS
@@ -89,7 +126,15 @@ class EstadisticasController:
             self.vehiculo_id, mes, anio
         )
 
-        # ---- CONSUMO (MISMA LÓGICA QUE LA APP) ----
+        # 🚨 Aviso SOLO si no es la primera carga
+        if not self.repostajes and not self._primer_carga:
+            self._msgbox(
+                QMessageBox.Information,
+                "Estadísticas",
+                "No hay datos para el período seleccionado"
+            )
+
+        # ---- CONSUMO (MISMA LÓGICA QUE ANDROID) ----
         self.datos_consumo = []
         if len(self.repostajes) > 1:
             for i in range(1, len(self.repostajes)):
@@ -101,14 +146,14 @@ class EstadisticasController:
                     consumo = (
                         self.repostajes[i - 1]["litros"] / km
                     ) * 100
-
-                    self.datos_consumo.append((
-                        self.repostajes[i]["fecha"],
-                        consumo
-                    ))
+                    self.datos_consumo.append(
+                        (self.repostajes[i]["fecha"], consumo)
+                    )
 
         self._dibujar_gasto()
         self._dibujar_consumo()
+
+        self._primer_carga = False  # ✅ FIN DE PRIMERA CARGA
 
     # =================================================
     # DIBUJO GRÁFICAS
@@ -174,8 +219,8 @@ class EstadisticasController:
     # =================================================
     def exportar_pdf(self):
         if not self.datos_gasto:
-            QMessageBox.warning(
-                self.widget,
+            self._msgbox(
+                QMessageBox.Warning,
                 "PDF",
                 "No hay datos para generar el informe"
             )
@@ -190,15 +235,13 @@ class EstadisticasController:
         if not ruta:
             return
 
-        # -------- USUARIO --------
         usuario = {
-            "Nombre": f"{self.app.usuario.get('nombre')} {self.app.usuario.get('apellidos')}",
-            "Usuario": self.app.usuario.get("username"),
-            "Email": self.app.usuario.get("email"),
-            "Ciudad": self.app.usuario.get("ciudad")
+            "Nombre": f"{self.app.usuario['nombre']} {self.app.usuario['apellidos']}",
+            "Usuario": self.app.usuario["username"],
+            "Email": self.app.usuario["email"],
+            "Ciudad": self.app.usuario["ciudad"]
         }
 
-        # -------- VEHÍCULO --------
         vehiculo_raw = next(
             v for v in self.vehiculo_repo.find_by_user(
                 self.app.usuario["id"]
@@ -233,16 +276,24 @@ class EstadisticasController:
             periodo
         )
 
-        QMessageBox.information(
-            self.widget,
+        self._msgbox(
+            QMessageBox.Information,
             "PDF",
             "Informe generado correctamente"
         )
 
     # =================================================
-    # EXPORTAR CSV
+    # EXPORTAR CSV (PROTEGIDO)
     # =================================================
     def exportar_csv(self):
+        if not self.repostajes:
+            self._msgbox(
+                QMessageBox.Warning,
+                "CSV",
+                "No hay datos para exportar en el período seleccionado"
+            )
+            return
+
         ruta, _ = QFileDialog.getSaveFileName(
             self.widget,
             "Exportar CSV",
@@ -265,8 +316,8 @@ class EstadisticasController:
                     r["precio_total"]
                 ])
 
-        QMessageBox.information(
-            self.widget,
+        self._msgbox(
+            QMessageBox.Information,
             "CSV",
             "CSV exportado correctamente"
         )

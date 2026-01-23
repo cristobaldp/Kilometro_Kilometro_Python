@@ -1,6 +1,13 @@
-class MapaGasolinerasController:
+from PySide6.QtCore import QObject, Signal
+
+
+class MapaGasolinerasController(QObject):
+
+    # 🔔 señal cuando el mapa ya está listo
+    carga_finalizada = Signal()
 
     def __init__(self, service, app):
+        super().__init__()
         self.service = service
         self.app = app
         self.view = None
@@ -8,6 +15,15 @@ class MapaGasolinerasController:
     # -------------------------
     def set_view(self, view):
         self.view = view
+
+        # 👉 cuando el QWebEngine termina de cargar
+        if hasattr(self.view, "map_loaded"):
+            self.view.map_loaded.connect(self._on_mapa_listo)
+
+    # -------------------------
+    def _on_mapa_listo(self):
+        # avisamos al AppController
+        self.carga_finalizada.emit()
 
     # -------------------------
     def buscar_localidad(self, localidad):
@@ -17,5 +33,4 @@ class MapaGasolinerasController:
 
     # -------------------------
     def volver_menu(self):
-        # Volver al menú principal
         self.app.mostrar_menu(self.app.usuario)

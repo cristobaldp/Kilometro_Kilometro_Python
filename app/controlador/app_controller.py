@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QWidget, QProgressDialog
+from PySide6.QtWidgets import QWidget
 from PySide6.QtCore import Qt
 
 # -------- VISTAS (UI) --------
@@ -9,8 +9,6 @@ from app.vista.add_vehiculo_ui import Ui_AddVehiculoView
 from app.vista.add_repostaje_ui import Ui_AddRepostajeView
 from app.vista.perfil_ui import Ui_PerfilView
 from app.vista.estadisticas_ui import Ui_EstadisticasView
-
-# 👉 VISTA REAL DEL MAPA
 from app.vista.mapa_gasolineras_view import MapaGasolinerasView
 
 # -------- CONTROLADORES --------
@@ -25,20 +23,25 @@ from app.controlador.perfil_controller import PerfilController
 from app.controlador.estadisticas_controller import EstadisticasController
 from app.controlador.mapa_gasolineras_controller import MapaGasolinerasController
 
-# -------- MAPA (SERVICE + REPO) --------
+# -------- STATUS WIDGET (TUYO 🔥) --------
+from app.controlador.status_widget_controller import StatusWidgetController
+
+# -------- MAPA --------
 from app.repository.gasolineras_api_repository import GasolinerasApiRepository
 from app.service.gasolineras_service import GasolinerasService
+import shiboken6
 
 
 class AppController:
 
     def __init__(self):
-        self.ventana_actual = None
+        self.ventana_actual: QWidget | None = None
         self.controller_actual = None
         self.usuario = None
+        self.status_widget: StatusWidgetController | None = None
 
     # ==================================================
-    # MÉTODO CENTRAL PARA MOSTRAR VENTANAS
+    # MOSTRAR VENTANA
     # ==================================================
     def _mostrar(self, widget: QWidget):
         if self.ventana_actual:
@@ -48,54 +51,35 @@ class AppController:
         self.ventana_actual.show()
 
     # ==================================================
-    # LOADING DIALOG BONITO 🔥
+    # STATUS WIDGET (OVERLAY)
     # ==================================================
-    def _crear_loading_dialog(self, texto: str):
-        loading = QProgressDialog(
-            texto,
-            None,
-            0,
-            0,
-            self.ventana_actual
-        )
+    def mostrar_status(self, status: str, mensaje: str = ""):
+     if not self.ventana_actual:
+        return
+ 
+     self.ocultar_status()
 
-        loading.setWindowTitle("Cargando")
-        loading.setCancelButton(None)
-        loading.setWindowModality(Qt.ApplicationModal)
-        loading.setMinimumWidth(420)
-        loading.setMinimumHeight(140)
+     self.status_widget = StatusWidgetController(self.ventana_actual)
+ 
+    # 🔥 CLAVE ABSOLUTA
+     self.status_widget.setAttribute(Qt.WA_StyledBackground, True)
+     self.status_widget.setAttribute(Qt.WA_NoSystemBackground, False)
+     self.status_widget.setAttribute(Qt.WA_TransparentForMouseEvents, False)
 
-        loading.setStyleSheet("""
-            QProgressDialog {
-                background-color: #121212;
-                color: white;
-                border-radius: 12px;
-                padding: 16px;
-                font-size: 14px;
-            }
+    # 🔥 OCUPA TODA LA VENTANA
+     self.status_widget.setGeometry(self.ventana_actual.rect())
 
-            QLabel {
-                color: #e0e0e0;
-                font-size: 14px;
-            }
+    # 🔥 CONFIGURAR CONTENIDO
+     self.status_widget.set_status(
+         status=status,
+        message=mensaje
+     )
 
-            QProgressBar {
-                background-color: #1e1e1e;
-                border-radius: 8px;
-                height: 14px;
-                text-align: center;
-                color: transparent;
-            }
+    # 🔥 ORDEN DE PINTADO (ESTO ES LO QUE TE FALTABA)
+     self.status_widget.show()
+     self.status_widget.raise_()
+     self.status_widget.repaint()
 
-            QProgressBar::chunk {
-                background-color: #00c853;
-                border-radius: 8px;
-            }
-        """)
-
-        loading.show()
-        loading.repaint()
-        return loading
 
     # ==================================================
     # LOGIN
@@ -172,28 +156,42 @@ class AppController:
         self._mostrar(widget)
 
     # ==================================================
-    # MAPA DE GASOLINERAS
+    # MAPA DE GASOLINERAS 🔥
     # ==================================================
     def mostrar_mapa_gasolineras(self):
 
-        # ---------- LOADING BONITO ----------
-        loading = self._crear_loading_dialog(
-            "⛽ Cargando mapa de gasolineras...\n\nObteniendo precios actualizados"
-        )
+    # 🔥 mostrar overlay
+     self.mostrar_status(
+        status="loading",
+        mensaje="⛽ Cargando mapa de gasolineras...\n\nObteniendo precios actualizados"
+     )
 
-        # ---------- CREACIÓN DEL MAPA ----------
-        repo = GasolinerasApiRepository()
-        service = GasolinerasService(repo)
-        mapa_controller = MapaGasolinerasController(service, self)
+    # crear mapa
+     repo = GasolinerasApiRepository()
+     service = GasolinerasService(repo)
+     mapa_controller = MapaGasolinerasController(service, self)
 
-        widget = MapaGasolinerasView(mapa_controller)
-        mapa_controller.set_view(widget)
+     widget = MapaGasolinerasView(mapa_controller)
+     mapa_controller.set_view(widget)
 
-        self.controller_actual = mapa_controller
-        self._mostrar(widget)
+    # 🔔 cuando el mapa termine → ocultar overlay
+     mapa_controller.carga_finalizada.connect(self.ocultar_status)
 
-        # ---------- CERRAR LOADING ----------
-        loading.close()
+     self.controller_actual = mapa_controller
+     self._mostrar(widget)
+     
+    def ocultar_status(self):
+     if self.status_widget is None:
+        return
+
+    # 🔥 comprobar si Qt ya lo destruyó
+     if shiboken6.isValid(self.status_widget):
+        self.status_widget.hide()
+        self.status_widget.deleteLater()
+
+     self.status_widget = None
+
+
 
     # ==================================================
     # ESTADÍSTICAS

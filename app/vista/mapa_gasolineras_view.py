@@ -8,9 +8,10 @@ from PySide6.QtCore import QUrl, Slot
 from PySide6.QtWebChannel import QWebChannel
 
 from app.vista.mapa_gasolineras_ui import Ui_MapaGasolineras
-
+from PySide6.QtCore import Signal
 
 class MapaGasolinerasView(QWidget):
+    mapa_cargado = Signal()
 
     def __init__(self, controller):
         super().__init__()
@@ -73,3 +74,7 @@ class MapaGasolinerasView(QWidget):
     def actualizar_marcadores(self, datos):
         script = f"actualizarMarcadores({json.dumps(datos)});"
         self.web.page().runJavaScript(script)
+        
+    def _on_load_finished(self, ok: bool):
+        if ok:
+            self.mapa_cargado.emit()

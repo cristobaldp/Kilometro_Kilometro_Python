@@ -48,6 +48,56 @@ class AppController:
         self.ventana_actual.show()
 
     # ==================================================
+    # LOADING DIALOG BONITO 🔥
+    # ==================================================
+    def _crear_loading_dialog(self, texto: str):
+        loading = QProgressDialog(
+            texto,
+            None,
+            0,
+            0,
+            self.ventana_actual
+        )
+
+        loading.setWindowTitle("Cargando")
+        loading.setCancelButton(None)
+        loading.setWindowModality(Qt.ApplicationModal)
+        loading.setMinimumWidth(420)
+        loading.setMinimumHeight(140)
+
+        loading.setStyleSheet("""
+            QProgressDialog {
+                background-color: #121212;
+                color: white;
+                border-radius: 12px;
+                padding: 16px;
+                font-size: 14px;
+            }
+
+            QLabel {
+                color: #e0e0e0;
+                font-size: 14px;
+            }
+
+            QProgressBar {
+                background-color: #1e1e1e;
+                border-radius: 8px;
+                height: 14px;
+                text-align: center;
+                color: transparent;
+            }
+
+            QProgressBar::chunk {
+                background-color: #00c853;
+                border-radius: 8px;
+            }
+        """)
+
+        loading.show()
+        loading.repaint()
+        return loading
+
+    # ==================================================
     # LOGIN
     # ==================================================
     def mostrar_login(self):
@@ -125,20 +175,11 @@ class AppController:
     # MAPA DE GASOLINERAS
     # ==================================================
     def mostrar_mapa_gasolineras(self):
-        # ---------- DIÁLOGO DE CARGA ----------
-        loading = QProgressDialog(
-            "Cargando mapa de gasolineras...\nObteniendo precios actualizados",
-            None,
-            0,
-            0,
-            self.ventana_actual
+
+        # ---------- LOADING BONITO ----------
+        loading = self._crear_loading_dialog(
+            "⛽ Cargando mapa de gasolineras...\n\nObteniendo precios actualizados"
         )
-        loading.setWindowTitle("Iniciando mapa")
-        loading.setCancelButton(None)
-        loading.setWindowModality(Qt.ApplicationModal)
-        loading.setMinimumWidth(350)
-        loading.show()
-        loading.repaint()
 
         # ---------- CREACIÓN DEL MAPA ----------
         repo = GasolinerasApiRepository()

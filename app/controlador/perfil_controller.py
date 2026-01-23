@@ -44,7 +44,7 @@ class PerfilController:
             )
 
     # -------------------------------------------------
-    # BLOQUEAR CAMPOS (ESTADO INICIAL / TRAS GUARDAR)
+    # BLOQUEAR CAMPOS
     # -------------------------------------------------
     def bloquear_campos(self):
         campos = [
@@ -66,7 +66,7 @@ class PerfilController:
         self.ui.btnGuardar.setEnabled(False)
 
     # -------------------------------------------------
-    # MODO EDICIÓN (VISUAL + FUNCIONAL)
+    # MODO EDICIÓN
     # -------------------------------------------------
     def editar(self):
         self.ocultar_mensaje()
@@ -89,35 +89,57 @@ class PerfilController:
         self.ui.btnGuardar.setEnabled(True)
 
     # -------------------------------------------------
-    # GUARDAR PERFIL
+    # GUARDAR PERFIL (VALIDADO)
     # -------------------------------------------------
     def guardar(self):
         self.ocultar_mensaje()
 
+        nombre = self.ui.inputNombre.text().strip()
+        apellidos = self.ui.inputApellidos.text().strip()
+        email = self.ui.inputEmail.text().strip()
         telefono = self.ui.inputTelefono.text().strip()
+        ciudad = self.ui.inputCiudad.text().strip()
+
+        # 🔒 VALIDACIONES OBLIGATORIAS
+        if not nombre:
+            return self.mostrar_error("El nombre no puede estar vacío")
+
+        if not apellidos:
+            return self.mostrar_error("Los apellidos no pueden estar vacíos")
+
+        if not email:
+            return self.mostrar_error("El email no puede estar vacío")
+
+        if not ciudad:
+            return self.mostrar_error("La ciudad no puede estar vacía")
+
         if not telefono.isdigit() or len(telefono) != 9:
             return self.mostrar_error("Teléfono inválido (9 dígitos)")
 
         datos = {
             "id": self.app.usuario["id"],
-            "nombre": self.ui.inputNombre.text().strip(),
-            "apellidos": self.ui.inputApellidos.text().strip(),
-            "email": self.ui.inputEmail.text().strip(),
+            "nombre": nombre,
+            "apellidos": apellidos,
+            "email": email,
             "telefono": telefono,
-            "ciudad": self.ui.inputCiudad.text().strip()
+            "ciudad": ciudad
         }
 
-        self.service.actualizar_perfil(datos)
-        self.app.usuario.update(datos)
+        try:
+            self.service.actualizar_perfil(datos)
+            self.app.usuario.update(datos)
 
-        QMessageBox.information(
-            self.widget,
-            "Perfil",
-            "Datos actualizados correctamente"
-        )
+            QMessageBox.information(
+                self.widget,
+                "Perfil",
+                "Datos actualizados correctamente"
+            )
 
-        self.bloquear_campos()
-        self.app.mostrar_menu(self.app.usuario)
+            self.bloquear_campos()
+            self.app.mostrar_menu(self.app.usuario)
+
+        except Exception as e:
+            self.mostrar_error(str(e))
 
     # -------------------------------------------------
     # CAMBIAR CONTRASEÑA
@@ -176,7 +198,7 @@ class PerfilController:
         self.app.mostrar_menu(self.app.usuario)
 
     # -------------------------------------------------
-    # MENSAJES (ESTILO UNIFICADO)
+    # MENSAJES
     # -------------------------------------------------
     def mostrar_error(self, texto):
         lbl = self.ui.labelMensaje

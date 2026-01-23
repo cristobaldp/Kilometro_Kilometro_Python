@@ -15,15 +15,15 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QAbstractItemView, QApplication, QHBoxLayout, QHeaderView,
-    QLabel, QPushButton, QSizePolicy, QSpacerItem,
-    QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QAbstractItemView, QApplication, QGridLayout, QHBoxLayout,
+    QHeaderView, QLabel, QPushButton, QSizePolicy,
+    QSpacerItem, QTableWidget, QTableWidgetItem, QWidget)
 
 class Ui_VehiculosView(object):
     def setupUi(self, VehiculosView):
         if not VehiculosView.objectName():
             VehiculosView.setObjectName(u"VehiculosView")
-        VehiculosView.resize(946, 572)
+        VehiculosView.resize(845, 568)
         VehiculosView.setStyleSheet(u"QWidget {\n"
 "    background-color: #081c20;\n"
 "}\n"
@@ -47,8 +47,8 @@ class Ui_VehiculosView(object):
 "    font-size: 13px;\n"
 "}\n"
 "")
-        self.vboxLayout = QVBoxLayout(VehiculosView)
-        self.vboxLayout.setObjectName(u"vboxLayout")
+        self.gridLayout = QGridLayout(VehiculosView)
+        self.gridLayout.setObjectName(u"gridLayout")
         self.labelTitulo = QLabel(VehiculosView)
         self.labelTitulo.setObjectName(u"labelTitulo")
         font = QFont()
@@ -119,7 +119,7 @@ class Ui_VehiculosView(object):
 "")
         self.labelTitulo.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        self.vboxLayout.addWidget(self.labelTitulo)
+        self.gridLayout.addWidget(self.labelTitulo, 0, 0, 1, 1)
 
         self.labelSubtitulo = QLabel(VehiculosView)
         self.labelSubtitulo.setObjectName(u"labelSubtitulo")
@@ -187,7 +187,7 @@ class Ui_VehiculosView(object):
 "")
         self.labelSubtitulo.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        self.vboxLayout.addWidget(self.labelSubtitulo)
+        self.gridLayout.addWidget(self.labelSubtitulo, 1, 0, 1, 1)
 
         self.tablaVehiculos = QTableWidget(VehiculosView)
         if (self.tablaVehiculos.columnCount() < 7):
@@ -294,7 +294,7 @@ class Ui_VehiculosView(object):
         self.tablaVehiculos.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.tablaVehiculos.setColumnCount(7)
 
-        self.vboxLayout.addWidget(self.tablaVehiculos)
+        self.gridLayout.addWidget(self.tablaVehiculos, 2, 0, 1, 1)
 
         self.hboxLayout = QHBoxLayout()
         self.hboxLayout.setObjectName(u"hboxLayout")
@@ -467,7 +467,7 @@ class Ui_VehiculosView(object):
         self.hboxLayout.addWidget(self.btnAddVehiculo)
 
 
-        self.vboxLayout.addLayout(self.hboxLayout)
+        self.gridLayout.addLayout(self.hboxLayout, 3, 0, 1, 1)
 
 
         self.retranslateUi(VehiculosView)
@@ -496,6 +496,6 @@ class Ui_VehiculosView(object):
         self.btnVolver.setText(QCoreApplication.translate("VehiculosView", u"Volver", None))
         self.btnSetActivo.setText(QCoreApplication.translate("VehiculosView", u"\u2714Marcar como activo", None))
         self.btnEliminar.setText(QCoreApplication.translate("VehiculosView", u"Eliminar", None))
-        self.btnAddVehiculo.setText(QCoreApplication.translate("VehiculosView", u"\u2795A\u00f1adir veh\u00edculo", None))
+        self.btnAddVehiculo.setText(QCoreApplication.translate("VehiculosView", u"A\u00f1adir veh\u00edculo", None))
     # retranslateUi
 

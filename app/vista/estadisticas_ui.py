@@ -815,6 +815,6 @@ class Ui_EstadisticasView(object):
         self.btnExportPDF.setText(QCoreApplication.translate("EstadisticasView", u" Exportar PDF", None))
         self.groupGasto.setTitle(QCoreApplication.translate("EstadisticasView", u"Gasto Diario (\u20ac)", None))
         self.groupConsumo.setTitle(QCoreApplication.translate("EstadisticasView", u" Consumo (L/100km)", None))
-        self.btnVolver.setText(QCoreApplication.translate("EstadisticasView", u"\u2190 Volver al Men\u00fa", None))
+        self.btnVolver.setText(QCoreApplication.translate("EstadisticasView", u" Volver al Men\u00fa", None))
     # retranslateUi
 

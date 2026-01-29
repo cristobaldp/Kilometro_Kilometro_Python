@@ -16,7 +16,7 @@ class MapaGasolinerasController(QObject):
     def set_view(self, view):
         self.view = view
 
-        # 👉 cuando el QWebEngine termina de cargar
+      
         if hasattr(self.view, "map_loaded"):
             self.view.map_loaded.connect(self._on_mapa_listo)
 

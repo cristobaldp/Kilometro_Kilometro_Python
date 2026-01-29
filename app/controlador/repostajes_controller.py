@@ -8,7 +8,7 @@ from app.vista.repostajes_ui import Ui_RepostajesView
 from app.service.repostaje_service import RepostajeService
 from app.service.vehiculo_service import VehiculoService
 from app.reports.informe_repostajes_pdf import InformeRepostajesPDF
-
+from app.estilos.estilos import MESSAGEBOX_STYLE
 
 class RepostajesController:
 
@@ -233,7 +233,7 @@ class RepostajesController:
         msg.setWindowTitle(titulo)
         msg.setText(texto)
         msg.setIcon(icono)
-        msg.setStyleSheet(self._estilo_msgbox())
+        msg.setStyleSheet(MESSAGEBOX_STYLE)
         msg.exec()
 
     def _confirmar(self, texto):
@@ -242,29 +242,7 @@ class RepostajesController:
         msg.setText(texto)
         msg.setIcon(QMessageBox.Question)
         msg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
-        msg.setStyleSheet(self._estilo_msgbox())
+        msg.setStyleSheet(MESSAGEBOX_STYLE)
         return msg.exec() == QMessageBox.Yes
 
-    def _estilo_msgbox(self):
-        return """
-        QMessageBox {
-            background-color: #081c20;
-            color: #ecfeff;
-            font-size: 13px;
-        }
-        QLabel {
-            color: #ecfeff;
-        }
-        QPushButton {
-            background-color: #0f3a43;
-            color: #ecfeff;
-            border: 1px solid #22d3ee;
-            border-radius: 8px;
-            padding: 6px 14px;
-            min-width: 90px;
-            font-weight: 600;
-        }
-        QPushButton:hover {
-            background-color: #155e6a;
-        }
-        """
+   

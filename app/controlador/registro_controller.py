@@ -1,5 +1,6 @@
-from app.service.usuario_service import UsuarioService
 from PySide6.QtWidgets import QMessageBox
+from app.service.usuario_service import UsuarioService
+from app.estilos.estilos import MESSAGEBOX_STYLE
 
 
 class RegistroController:
@@ -12,7 +13,7 @@ class RegistroController:
 
         self.cargar_ciudades()
 
-        # Limitar tamaño del combo (MUY IMPORTANTE)
+        # Limitar tamaño del combo
         self.ui.comboCiudad.setMaxVisibleItems(5)
 
         # Conexiones
@@ -91,16 +92,23 @@ class RegistroController:
         if not usuario:
             return self._error("El usuario ya existe")
 
-        QMessageBox.information(
-            self.widget,
-            "Registro completado",
-            "Usuario registrado correctamente.\n\nAhora inicia sesión."
+        # ✅ MESSAGEBOX CON ESTILO
+        msg = QMessageBox(self.widget)
+        msg.setWindowTitle("Registro completado")
+        msg.setText(
+            "Usuario registrado correctamente.\n\n"
+            "Ahora inicia sesión."
         )
+        msg.setIcon(QMessageBox.Information)
+        msg.setStandardButtons(QMessageBox.Ok)
+
+        msg.setStyleSheet(MESSAGEBOX_STYLE)
+        msg.exec()
 
         self.app.mostrar_login()
 
     # -----------------------
-    # MENSAJE ERROR
+    # MENSAJE ERROR (LABEL)
     # -----------------------
     def _error(self, mensaje):
         self.ui.labelMensaje.setText(mensaje)

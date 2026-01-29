@@ -1,7 +1,13 @@
-from PySide6.QtWidgets import QWidget, QTableWidgetItem, QMessageBox
+from PySide6.QtWidgets import (
+    QWidget,
+    QTableWidgetItem,
+    QMessageBox,
+    QAbstractItemView
+)
 
 from app.vista.vehiculos_ui import Ui_VehiculosView
 from app.service.vehiculo_service import VehiculoService
+from app.estilos.estilos import MESSAGEBOX_STYLE
 
 
 class VehiculosController:
@@ -15,7 +21,17 @@ class VehiculosController:
         self.ui = Ui_VehiculosView()
         self.ui.setupUi(self.widget)
 
-        # Conexiones de botones
+        # 🔒 Selección correcta por filas
+        self.ui.tablaVehiculos.setSelectionBehavior(
+            QAbstractItemView.SelectRows
+        )
+        self.ui.tablaVehiculos.setSelectionMode(
+            QAbstractItemView.SingleSelection
+        )
+        self.ui.tablaVehiculos.clearSelection()
+        self.ui.tablaVehiculos.setCurrentCell(-1, -1)
+
+        # Conexiones
         self.ui.btnAddVehiculo.clicked.connect(self.abrir_add)
         self.ui.btnEliminar.clicked.connect(self.eliminar_vehiculo)
         self.ui.btnSetActivo.clicked.connect(self.marcar_activo)
@@ -31,13 +47,14 @@ class VehiculosController:
     # CARGAR TABLA
     # -----------------------
     def cargar_tabla(self):
-        # Guardamos los vehículos para reutilizarlos (ej: eliminar)
         self.vehiculos = self.service.listar(self.app.usuario["id"])
-
         self.ui.tablaVehiculos.setRowCount(len(self.vehiculos))
 
+        # Limpiar selección cada recarga
+        self.ui.tablaVehiculos.clearSelection()
+        self.ui.tablaVehiculos.setCurrentCell(-1, -1)
+
         for fila, vehiculo in enumerate(self.vehiculos):
-            # vehiculo = (id, tipo, marca, modelo, matricula, anio, combustible, consumo)
             _, tipo, marca, modelo, matricula, _, combustible, consumo = vehiculo
 
             valores = [
@@ -65,82 +82,69 @@ class VehiculosController:
     # MARCAR ACTIVO
     # -----------------------
     def marcar_activo(self):
-        fila = self.ui.tablaVehiculos.currentRow()
-        if fila < 0:
+        if not self.ui.tablaVehiculos.selectionModel().hasSelection():
             return
 
+        fila = self.ui.tablaVehiculos.currentRow()
         vehiculo_id = self.vehiculos[fila][0]
 
         self.service.marcar_activo(self.app.usuario["id"], vehiculo_id)
         self.app.usuario["vehiculo_activo_id"] = vehiculo_id
-
         self.cargar_tabla()
 
     # -----------------------
-    # ELIMINAR VEHÍCULO (CON CONFIRMACIÓN)
+    # ELIMINAR VEHÍCULO
     # -----------------------
     def eliminar_vehiculo(self):
-     fila = self.ui.tablaVehiculos.currentRow()
-     if fila < 0:
-        return
 
-     msg = QMessageBox(self.widget)
-     msg.setWindowTitle("Eliminar vehículo")
-     msg.setText(
-        "¿Seguro que quieres eliminar este vehículo?\n\n"
-        "Esta acción no se puede deshacer."
-     )
-     msg.setIcon(QMessageBox.Question)
+        # 🚫 No hay selección real
+        if not self.ui.tablaVehiculos.selectionModel().hasSelection():
+            msg = QMessageBox(self.widget)
+            msg.setWindowTitle("Eliminar vehículo")
+            msg.setText("Debes seleccionar un vehículo para poder eliminarlo.")
+            msg.setIcon(QMessageBox.Warning)
+            msg.setStandardButtons(QMessageBox.Ok)
+            msg.setStyleSheet(MESSAGEBOX_STYLE)
+            msg.exec()
+            return
 
-     msg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
-     msg.setDefaultButton(QMessageBox.No)
+        fila = self.ui.tablaVehiculos.currentRow()
 
-    # 🔑 ESTILO COHERENTE CON TU APP
-     msg.setStyleSheet("""
-     QMessageBox {
-        background-color: #081c20;
-        color: #ecfeff;
-        font-size: 13px;
-     }
+        # ❓ Confirmación
+        msg = QMessageBox(self.widget)
+        msg.setWindowTitle("Eliminar vehículo")
+        msg.setText(
+            "¿Seguro que quieres eliminar este vehículo?\n\n"
+            "Esta acción no se puede deshacer."
+        )
+        msg.setIcon(QMessageBox.Question)
+        msg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+        msg.setDefaultButton(QMessageBox.No)
+        msg.setStyleSheet(MESSAGEBOX_STYLE)
 
-     QLabel {
-        color: #ecfeff;
-     }
+        if msg.exec() != QMessageBox.Yes:
+            return
 
-     QPushButton {
-        background-color: #0f3a43;
-        color: #ecfeff;
-        border: 1px solid #22d3ee;
-        border-radius: 8px;
-        padding: 6px 14px;
-        min-width: 90px;
-        font-weight: 600;
-     }
+        vehiculo_id = self.vehiculos[fila][0]
 
-     QPushButton:hover {
-        background-color: #155e6a;
-     }
+        # 🗑️ Eliminar
+        self.service.eliminar(vehiculo_id)
 
-     QPushButton:pressed {
-        background-color: #062023;
-     }
-    """)
+        # Si era el activo, quitarlo
+        if self.app.usuario.get("vehiculo_activo_id") == vehiculo_id:
+            self.service.quitar_activo(self.app.usuario["id"])
+            self.app.usuario["vehiculo_activo_id"] = None
 
-     respuesta = msg.exec()
+        # ✅ Mensaje de éxito
+        ok = QMessageBox(self.widget)
+        ok.setWindowTitle("Vehículo eliminado")
+        ok.setText("El vehículo se ha eliminado correctamente.")
+        ok.setIcon(QMessageBox.Information)
+        ok.setStandardButtons(QMessageBox.Ok)
+        ok.setStyleSheet(MESSAGEBOX_STYLE)
+        ok.exec()
 
-     if respuesta != QMessageBox.Yes:
-        return
-
-     vehiculo_id = self.vehiculos[fila][0]
-
-     self.service.eliminar(vehiculo_id)
-
-    # Si era el activo, limpiar
-     if self.app.usuario.get("vehiculo_activo_id") == vehiculo_id:
-        self.service.limpiar_activo(self.app.usuario["id"])
-        self.app.usuario["vehiculo_activo_id"] = None
-
-     self.cargar_tabla()
+        self.cargar_tabla()
 
     # -----------------------
     # VOLVER AL MENÚ

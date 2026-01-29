@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import QMessageBox
 from app.service.usuario_service import UsuarioService
 
-
+from app.estilos.estilos import MESSAGEBOX_STYLE
 class PerfilController:
 
     def __init__(self, widget, ui, app):
@@ -23,39 +23,14 @@ class PerfilController:
 
         self.ui.labelMensaje.setVisible(False)
 
-    # =================================================
-    # ESTILO MESSAGEBOX
-    # =================================================
-    def _estilo_msgbox(self):
-        return """
-        QMessageBox {
-            background-color: #081c20;
-            color: #ecfeff;
-            font-size: 13px;
-        }
-        QLabel {
-            color: #ecfeff;
-        }
-        QPushButton {
-            background-color: #0f3a43;
-            color: #ecfeff;
-            border: 1px solid #22d3ee;
-            border-radius: 8px;
-            padding: 6px 14px;
-            min-width: 90px;
-            font-weight: 600;
-        }
-        QPushButton:hover {
-            background-color: #155e6a;
-        }
-        """
+ 
 
     def _msgbox(self, icono, titulo, texto):
         msg = QMessageBox(self.widget)
         msg.setIcon(icono)
         msg.setWindowTitle(titulo)
         msg.setText(texto)
-        msg.setStyleSheet(self._estilo_msgbox())
+        msg.setStyleSheet(MESSAGEBOX_STYLE)
         msg.exec()
 
     def _confirmar(self, texto):
@@ -64,7 +39,7 @@ class PerfilController:
         msg.setWindowTitle("Confirmar")
         msg.setText(texto)
         msg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
-        msg.setStyleSheet(self._estilo_msgbox())
+        msg.setStyleSheet(MESSAGEBOX_STYLE)
         return msg.exec() == QMessageBox.Yes
 
     # -------------------------------------------------

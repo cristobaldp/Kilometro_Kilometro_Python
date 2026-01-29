@@ -109,47 +109,52 @@ class AddVehiculoController:
     # GUARDAR
     # -------------------------------------------------
     def guardar(self):
-        self._ocultar_mensaje()
+     self._ocultar_mensaje()
 
-        tipo = self.ui.comboTipo.currentText()
-        marca = self.ui.comboMarca.currentText()
-        modelo = self.ui.comboModelo.currentText()
-        combustible = self.ui.comboCombustible.currentText()
+     tipo = self.ui.comboTipo.currentText()
+     marca = self.ui.comboMarca.currentText()
+     modelo = self.ui.comboModelo.currentText()
+     combustible = self.ui.comboCombustible.currentText()
 
-        matricula = self.ui.inputMatricula.text().strip().upper()
-        consumo = self.ui.spinConsumo.value()
-        anio = self.ui.spinAnio.value()
+     matricula = self.ui.inputMatricula.text().strip().upper()
+     consumo = self.ui.spinConsumo.value()
+     anio = self.ui.spinAnio.value()
 
-        if "Selecciona" in (tipo, marca, modelo):
-            return self._error("Selecciona tipo, marca y modelo")
+     if "Selecciona" in (tipo, marca, modelo):
+        return self._error("Selecciona tipo, marca y modelo")
 
-        if not matricula:
-            return self._error("Introduce la matrícula")
+     if not matricula:
+        return self._error("Introduce la matrícula")
 
-        if not self.matricula_valida(matricula):
-            return self._error("Matrícula inválida (ej: 1234 BCD)")
+     if not self.matricula_valida(matricula):
+        return self._error("Matrícula inválida (ej: 1234 BCD)")
 
-        if not combustible:
-            return self._error("Selecciona el combustible")
+     if not combustible:
+        return self._error("Selecciona el combustible")
 
-        if consumo <= 0:
-            return self._error("El consumo debe ser mayor que 0")
+     if consumo <= 0:
+        return self._error("El consumo debe ser mayor que 0")
 
-        if anio <= 1900:
-            return self._error("El año no es válido")
+     if anio <= 1900:
+        return self._error("El año no es válido")
 
-        self.service.insertar(
-            user_id=self.app.usuario["id"],
-            tipo=tipo,
-            marca=marca,
-            modelo=modelo,
-            matricula=matricula,
-            anio=anio,
-            combustible=combustible,
-            consumo=consumo
-        )
+    # 🔑 CLAVE: comprobar resultado
+     ok = self.service.insertar(
+        user_id=self.app.usuario["id"],
+        tipo=tipo,
+        marca=marca,
+        modelo=modelo,
+        matricula=matricula,
+        anio=anio,
+        combustible=combustible,
+        consumo=consumo
+     )
 
-        self.app.mostrar_vehiculos()
+     if not ok:
+        return self._error("La matrícula ya está en uso")
+
+    # ✅ Solo si todo ha ido bien
+     self.app.mostrar_vehiculos()
 
     # -------------------------------------------------
     # CANCELAR  ✅ ESTE ERA EL PROBLEMA

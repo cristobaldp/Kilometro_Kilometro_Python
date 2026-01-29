@@ -80,6 +80,17 @@ class VehiculoRepository:
         "Combustible": row[5],
         "Consumo homologado": f"{row[6]} L/100km" if row[6] else "N/D"
      }
+     
+    def existe_matricula(self, matricula):
+     con = get_connection()
+     cur = con.cursor()
+     cur.execute(
+        "SELECT 1 FROM vehiculos WHERE matricula = ?",
+        (matricula,)
+     )
+     existe = cur.fetchone() is not None
+     con.close()
+     return existe
 
         
         

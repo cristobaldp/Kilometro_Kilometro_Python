@@ -189,3 +189,15 @@ class UsuarioRepository:
 
         con.commit()
         con.close()
+        
+        
+    def existe_username(self, username):
+     con = get_connection()
+     cur = con.cursor()
+     cur.execute(
+        "SELECT 1 FROM usuarios WHERE username = ?",
+        (username,)
+     )
+     existe = cur.fetchone() is not None
+     con.close()
+     return existe

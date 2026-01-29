@@ -18,6 +18,10 @@ class UsuarioService:
     # REGISTRO
     # -------------------------
     def registrar_usuario(self, datos):
+        # 🔒 Comprobar si el username ya existe
+        if self.repo.existe_username(datos["username"]):
+            return None  # ← el controller mostrará el mensaje
+
         self.repo.insert(datos)
         return self.login(datos["username"], datos["password"])
 

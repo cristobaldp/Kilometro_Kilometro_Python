@@ -16,16 +16,22 @@ class VehiculoService:
     # INSERTAR VEHÍCULO
     # -------------------------
     def insertar(self, user_id, tipo, marca, modelo, matricula, anio, combustible, consumo):
-        return self.repo.insert(
-            user_id,
-            tipo,
-            marca,
-            modelo,
-            matricula,
-            anio,
-            combustible,
-            consumo
-        )
+
+    # 🔒 Comprobar matrícula duplicada
+     if self.repo.existe_matricula(matricula):
+        return False   # ← señal de error
+
+     self.repo.insert(
+        user_id,
+        tipo,
+        marca,
+        modelo,
+        matricula,
+        anio,
+        combustible,
+        consumo
+     )
+     return True
 
     # -------------------------
     # ELIMINAR VEHÍCULO

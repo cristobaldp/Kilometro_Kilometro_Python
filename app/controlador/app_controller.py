@@ -23,7 +23,7 @@ from app.controlador.perfil_controller import PerfilController
 from app.controlador.estadisticas_controller import EstadisticasController
 from app.controlador.mapa_gasolineras_controller import MapaGasolinerasController
 
-# -------- STATUS WIDGET (TUYO 🔥) --------
+# -------- STATUS WIDGET (WIDGET REUTILIZABLE) --------
 from app.controlador.status_widget_controller import StatusWidgetController
 
 # -------- MAPA --------
@@ -61,21 +61,21 @@ class AppController:
 
      self.status_widget = StatusWidgetController(self.ventana_actual)
  
-    # 🔥 CLAVE ABSOLUTA
+    #  CLAVE ABSOLUTA
      self.status_widget.setAttribute(Qt.WA_StyledBackground, True)
      self.status_widget.setAttribute(Qt.WA_NoSystemBackground, False)
      self.status_widget.setAttribute(Qt.WA_TransparentForMouseEvents, False)
 
-    # 🔥 OCUPA TODA LA VENTANA
+    #  OCUPA TODA LA VENTANA
      self.status_widget.setGeometry(self.ventana_actual.rect())
 
-    # 🔥 CONFIGURAR CONTENIDO
+    #  CONFIGURAR CONTENIDO
      self.status_widget.set_status(
          status=status,
         message=mensaje
      )
 
-    # 🔥 ORDEN DE PINTADO (ESTO ES LO QUE TE FALTABA)
+    #  ORDEN DE PINTADO (ESTO ES LO QUE TE FALTABA)
      self.status_widget.show()
      self.status_widget.raise_()
      self.status_widget.repaint()
@@ -156,11 +156,11 @@ class AppController:
         self._mostrar(widget)
 
     # ==================================================
-    # MAPA DE GASOLINERAS 🔥
+    # MAPA DE GASOLINERAS 
     # ==================================================
     def mostrar_mapa_gasolineras(self):
 
-    # 🔥 mostrar overlay
+    #  mostrar overlay
      self.mostrar_status(
         status="loading",
         mensaje="⛽ Cargando mapa de gasolineras...\n\nObteniendo precios actualizados"
@@ -174,7 +174,7 @@ class AppController:
      widget = MapaGasolinerasView(mapa_controller)
      mapa_controller.set_view(widget)
 
-    # 🔔 cuando el mapa termine → ocultar overlay
+    #  cuando el mapa termine → ocultar overlay
      mapa_controller.carga_finalizada.connect(self.ocultar_status)
 
      self.controller_actual = mapa_controller
@@ -184,7 +184,7 @@ class AppController:
      if self.status_widget is None:
         return
 
-    # 🔥 comprobar si Qt ya lo destruyó
+    #  comprobar si Qt ya lo destruyó
      if shiboken6.isValid(self.status_widget):
         self.status_widget.hide()
         self.status_widget.deleteLater()

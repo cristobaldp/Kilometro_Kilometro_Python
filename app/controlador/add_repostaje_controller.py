@@ -88,7 +88,7 @@ class AddRepostajeController:
      lbl = self.ui.labelMensaje
      lbl.setText(texto)
 
-    # 🔑 MISMO PATRÓN QUE EN VEHÍCULOS
+    #  MISMO PATRÓN QUE EN VEHÍCULOS
      lbl.setObjectName("mensajeError")
 
      lbl.style().unpolish(lbl)

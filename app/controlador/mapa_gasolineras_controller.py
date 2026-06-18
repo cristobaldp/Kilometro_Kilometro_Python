@@ -3,7 +3,7 @@ from PySide6.QtCore import QObject, Signal
 
 class MapaGasolinerasController(QObject):
 
-    # 🔔 señal cuando el mapa ya está listo
+    #  señal cuando el mapa ya está listo
     carga_finalizada = Signal()
 
     def __init__(self, service, app):

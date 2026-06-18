@@ -138,7 +138,7 @@ class AddVehiculoController:
      if anio <= 1900:
         return self._error("El año no es válido")
 
-    # 🔑 CLAVE: comprobar resultado
+    #  CLAVE: comprobar resultado
      ok = self.service.insertar(
         user_id=self.app.usuario["id"],
         tipo=tipo,
@@ -153,12 +153,10 @@ class AddVehiculoController:
      if not ok:
         return self._error("La matrícula ya está en uso")
 
-    # ✅ Solo si todo ha ido bien
+    #  Solo si todo ha ido bien
      self.app.mostrar_vehiculos()
 
-    # -------------------------------------------------
-    # CANCELAR  ✅ ESTE ERA EL PROBLEMA
-    # -------------------------------------------------
+    
     def cancelar(self):
         self.app.mostrar_vehiculos()
 
@@ -169,10 +167,10 @@ class AddVehiculoController:
      lbl = self.ui.labelMensaje
      lbl.setText(texto)
 
-    # 🔑 Cambiar objectName
+    #  Cambiar objectName
      lbl.setObjectName("mensajeError")
 
-     # 🔑 Forzar reaplicar QSS
+     #  Forzar reaplicar QSS
      lbl.style().unpolish(lbl)
      lbl.style().polish(lbl)
 

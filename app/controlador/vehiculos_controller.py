@@ -21,7 +21,7 @@ class VehiculosController:
         self.ui = Ui_VehiculosView()
         self.ui.setupUi(self.widget)
 
-        # 🔒 Selección correcta por filas
+        #  Selección correcta por filas
         self.ui.tablaVehiculos.setSelectionBehavior(
             QAbstractItemView.SelectRows
         )
@@ -97,7 +97,7 @@ class VehiculosController:
     # -----------------------
     def eliminar_vehiculo(self):
 
-        # 🚫 No hay selección real
+        #  No hay selección real
         if not self.ui.tablaVehiculos.selectionModel().hasSelection():
             msg = QMessageBox(self.widget)
             msg.setWindowTitle("Eliminar vehículo")
@@ -110,7 +110,7 @@ class VehiculosController:
 
         fila = self.ui.tablaVehiculos.currentRow()
 
-        # ❓ Confirmación
+        #  Confirmación
         msg = QMessageBox(self.widget)
         msg.setWindowTitle("Eliminar vehículo")
         msg.setText(
@@ -135,7 +135,7 @@ class VehiculosController:
             self.service.quitar_activo(self.app.usuario["id"])
             self.app.usuario["vehiculo_activo_id"] = None
 
-        # ✅ Mensaje de éxito
+        #  Mensaje de éxito
         ok = QMessageBox(self.widget)
         ok.setWindowTitle("Vehículo eliminado")
         ok.setText("El vehículo se ha eliminado correctamente.")

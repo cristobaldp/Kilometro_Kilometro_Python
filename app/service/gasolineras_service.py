@@ -35,7 +35,7 @@ class GasolinerasService:
                         "lon": lon_g,
                         "dist": round(distancia, 2),
 
-                        # 🔥 TODOS LOS PRECIOS 🔥
+                        #  TODOS LOS PRECIOS 
                         "precio95": g.get("Precio Gasolina 95 E5", "N/D"),
                         "precio95_10": g.get("Precio Gasolina 95 E10", "N/D"),
                         "precio98": g.get("Precio Gasolina 98 E5", "N/D"),

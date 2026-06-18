@@ -50,35 +50,35 @@ Kilometro_Kilometro_Python/
 
 
 
-🔐 Funcionalidades principales
-👤 Usuarios
+## 🔐 Funcionalidades principales
+## 👤 Usuarios
 Registro e inicio de sesión seguro (contraseñas hasheadas localmente y validadas vía API).
 
 Edición de perfil y cambio de contraseña.
 
-🚙 Vehículos
+## 🚙 Vehículos
 Añadir, editar y eliminar vehículos de tu garaje virtual.
 
 Selección de vehículo activo para el cálculo de estadísticas individuales.
 
-⛽ Repostajes
+## ⛽ Repostajes
 Registro detallado de repostajes (litros, precio total, kilómetros acumulados, fecha).
 
 Cálculo automático del consumo real entre repostajes consecutivos usando diferencias de kilometraje.
 
 Historial dinámico filtrable por mes y año.
 
-📊 Estadísticas
+## 📊 Estadísticas
 Gráficos interactivos de gasto mensual y consumo real de combustible.
 
 Filtros por período para controlar el impacto económico de tus trayectos.
 
-🗺️ Mapa de gasolineras (Opcional)
+## 🗺️ Mapa de gasolineras (Opcional)
 Consulta de precios y localización de estaciones de servicio vía API oficial del Geoportal de Gasolineras.
 
 Búsqueda predictiva por localidad.
 
-📱 Evolución prevista
+## 📱 Evolución prevista
 Gracias a la implementación de FastAPI en el núcleo de la estructura, la lógica de negocio ya está completamente desacoplada de la interfaz gráfica, lo que permitirá su adaptación inmediata a:
 
 📲 Aplicación móvil nativa en Android (Kotlin + Jetpack Compose) consumiendo el backend actual.
@@ -87,7 +87,7 @@ Gracias a la implementación de FastAPI en el núcleo de la estructura, la lógi
 
 ☁️ Sincronización híbrida (base de datos local replicada en la nube).
 
-🚀 Cómo ejecutar el proyecto
+## 🚀 Cómo ejecutar el proyecto
 Requisitos previos
 Python 3.9 o superior.
 

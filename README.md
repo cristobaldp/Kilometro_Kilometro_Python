@@ -2,7 +2,7 @@
 
 **Controla tu gasto, conduce con cabeza**
 
-Kilómetro a Kilómetro es una aplicación de escritorio desarrollada en Python para la gestión del consumo de combustible y el control de gastos de uno o varios vehículos. Está orientada tanto a conductores particulares como a pequeños negocios que buscan una herramienta sencilla, privada y eficaz.
+Kilómetro a Kilómetro es una aplicación multiplataforma desarrollada en Python que combina una **interfaz de escritorio (PySide6)** y una **API Backend (FastAPI)** para la gestión del consumo de combustible y el control de gastos de uno o varios vehículos. Está orientada tanto a conductores particulares como a pequeños negocios que buscan una herramienta sencilla, privada y eficaz.
 
 ---
 
@@ -10,97 +10,110 @@ Kilómetro a Kilómetro es una aplicación de escritorio desarrollada en Python 
 
 - Registrar repostajes (fecha, litros, precio, kilometraje).
 - Calcular automáticamente el consumo medio.
-- Visualizar estadísticas y evolución del gasto.
-- Gestionar múltiples vehículos desde una misma cuenta.
-- Sistema seguro de registro y login de usuarios.
+- Visualizar estadísticas y evolución del gasto en tiempo real.
+- Gestionar múltiples vehículos desde una misma cuenta de usuario.
+- Sistema seguro y unificado de registro y login (Local + API).
 - Consulta opcional de precios de combustible en gasolineras cercanas (API oficial).
 
 ---
 
 ## 🧰 Tecnologías utilizadas
 
-| Área               | Tecnología                          |
-|--------------------|-------------------------------------|
-| Lenguaje           | Python 3.9.13                       |
-| Interfaz gráfica   | PySide6 (Qt for Python) + Qt Designer |
-| Base de datos      | SQLite                              |
-| Arquitectura       | MVC (Modelo-Vista-Controlador)      |
-| Gráficos           | Matplotlib / QtCharts               |
-| Control de versiones | Git + GitHub                      |
-| APIs externas      | Geoportal de Gasolineras (España)   |
+| Área | Tecnología |
+| :--- | :--- |
+| **Lenguaje** | Python 3.9+ |
+| **Interfaz Gráfica** | PySide6 (Qt for Python) + Qt Designer |
+| **Backend & API** | FastAPI + Uvicorn |
+| **Base de Datos** | SQLite3 |
+| **Arquitectura** | MVC (Modelo-Vista-Controlador) híbrido |
+| **Gráficos** | Matplotlib / QtCharts |
+| **Control de Versiones** | Git + GitHub |
+| **APIs Externas** | Geoportal de Gasolineras (Ministerio de España) |
 
 ---
 
 ## 📁 Estructura del proyecto
 
+El proyecto integra tanto el cliente de escritorio como los servicios de la API dentro de una estructura unificada y limpia:
 
----
+```text
+Kilometro_Kilometro_Python/
+├── main.py                 # Punto de entrada principal (Inicia API + Escritorio)
+├── requirements.txt        # Dependencias del proyecto
+└── app/                    # Directorio raíz de la aplicación
+    ├── api.py              # Endpoints y lógica de FastAPI
+    ├── database.py         # Configuración y ruta de la base de datos SQLite
+    ├── controlador/        # Controladores de la interfaz PySide6
+    ├── vista/              # Archivos .ui y vistas de usuario
+    └── data/               # Scripts de inicialización y almacenamiento de la BD
 
-## 🔐 Funcionalidades principales
 
-### 👤 Usuarios
-- Registro e inicio de sesión seguro (contraseñas hasheadas con bcrypt).
-- Edición de perfil y cambio de contraseña.
 
-### 🚙 Vehículos
-- Añadir, editar y eliminar vehículos.
-- Asignación de vehículos a cada usuario.
 
-### ⛽ Repostajes
-- Registro de repostajes (litros, precio, km, fecha).
-- Cálculo automático del consumo real entre repostajes consecutivos.
-- Historial filtrable por mes y año.
-- Exportación a CSV y PDF.
+🔐 Funcionalidades principales
+👤 Usuarios
+Registro e inicio de sesión seguro (contraseñas hasheadas localmente y validadas vía API).
 
-### 📊 Estadísticas
-- Gráficos de gasto mensual y consumo real.
-- Filtros por período.
-- Exportación de datos.
+Edición de perfil y cambio de contraseña.
 
-### 🗺️ Mapa de gasolineras (opcional)
-- Consulta de precios y localización de estaciones de servicio vía API oficial.
-- Búsqueda por localidad.
+🚙 Vehículos
+Añadir, editar y eliminar vehículos de tu garaje virtual.
 
----
+Selección de vehículo activo para el cálculo de estadísticas individuales.
 
-## 📱 Evolución prevista
+⛽ Repostajes
+Registro detallado de repostajes (litros, precio total, kilómetros acumulados, fecha).
 
-Aunque la versión actual es de escritorio, el proyecto está diseñado con una arquitectura modular que permitirá su adaptación futura a:
+Cálculo automático del consumo real entre repostajes consecutivos usando diferencias de kilometraje.
 
-- 📲 Aplicación móvil nativa en Android (Kotlin + Jetpack Compose).
-- 🌐 Versión web opcional.
-- ☁️ Sincronización opcional con la nube (sin perder el modo local).
+Historial dinámico filtrable por mes y año.
 
----
+📊 Estadísticas
+Gráficos interactivos de gasto mensual y consumo real de combustible.
 
-## 🧪 Pruebas y validación
+Filtros por período para controlar el impacto económico de tus trayectos.
 
-La aplicación ha sido probada en entornos Windows y Linux, validando:
+🗺️ Mapa de gasolineras (Opcional)
+Consulta de precios y localización de estaciones de servicio vía API oficial del Geoportal de Gasolineras.
 
-- Flujo completo de registro, login y gestión de vehículos.
-- Cálculo correcto de consumos.
-- Persistencia local de datos.
-- Integración con la API de gasolineras.
-- Exportación de informes.
+Búsqueda predictiva por localidad.
 
----
+📱 Evolución prevista
+Gracias a la implementación de FastAPI en el núcleo de la estructura, la lógica de negocio ya está completamente desacoplada de la interfaz gráfica, lo que permitirá su adaptación inmediata a:
 
-## 🚀 Cómo ejecutar el proyecto
+📲 Aplicación móvil nativa en Android (Kotlin + Jetpack Compose) consumiendo el backend actual.
 
-### Requisitos previos
-- Python 3.9 o superior
-- pip (gestor de paquetes)
+🌐 Versión web oficial.
 
-### Instalación
+☁️ Sincronización híbrida (base de datos local replicada en la nube).
 
-```bash
-# Clonar el repositorio
-git clone https://github.com/cristobaldp/Kilometro_Kilometro_Python.git
+🚀 Cómo ejecutar el proyecto
+Requisitos previos
+Python 3.9 o superior.
+
+Pip (gestor de paquetes de Python).
+
+Instalación y despliegue
+Clonar el repositorio:
+
+Bash
+git clone [https://github.com/cristobaldp/Kilometro_Kilometro_Python.git](https://github.com/cristobaldp/Kilometro_Kilometro_Python.git)
 cd Kilometro_Kilometro_Python
+Crear y activar un entorno virtual (Recomendado):
 
-# Crear y activar entorno virtual (opcional pero recomendado)
+Bash
+# En Windows
 python -m venv venv
-source venv/bin/activate   # En Windows: venv\Scripts\activate
+venv\Scripts\activate
 
-# Instalar dependencias
+# En Linux/macOS
+python3 -m venv venv
+source venv/bin/activate
+Instalar las dependencias oficiales:
+
+Bash
 pip install -r requirements.txt
+Lanzar la aplicación:
+
+Bash
+python main.py

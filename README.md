@@ -47,32 +47,36 @@ Kilometro_Kilometro_Python/
     ├── vista/              # Archivos .ui y vistas de usuario
     └── data/               # Scripts de inicialización y almacenamiento de la BD
 🔐 Funcionalidades principales
-👤 Usuarios
-Registro e inicio de sesión seguro (contraseñas hasheadas localmente y validadas vía API).
+👤 Gestión de Usuarios
+Registro seguro: Creación de nuevas cuentas validando duplicados de usuario o email vía API.
 
-Edición de perfil y cambio de contraseña.
+Inicio de sesión unificado: Validación de credenciales con contraseñas hasheadas en SHA-256 compatibles entre el entorno local y la API.
 
-🚙 Vehículos
-Añadir, editar y eliminar vehículos de tu garaje virtual.
+Perfil: Edición de datos personales y actualización de contraseñas de acceso.
 
-Selección de vehículo activo para el cálculo de estadísticas individuales.
+🚙 Control de Vehículos
+Garaje virtual: Permite añadir, editar y eliminar múltiples vehículos por cuenta de usuario.
 
-⛽ Repostajes
-Registro detallado de repostajes (litros, precio total, kilómetros acumulados, fecha).
+Ficha técnica básica: Registro de marca, modelo, matrícula, año de fabricación, tipo de combustible y consumo estimado.
 
-Cálculo automático del consumo real entre repostajes consecutivos usando diferencias de kilometraje.
+Vehículo activo: Configuración de un vehículo principal para segmentar los cálculos de repostajes y analíticas de manera independiente.
 
-Historial dinámico filtrable por mes y año.
+⛽ Registro de Repostajes
+Control detallado: Almacenamiento preciso de fecha, litros introducidos, precio total abonado y kilometraje acumulado.
 
-📊 Estadísticas
-Gráficos interactivos de gasto mensual y consumo real de combustible.
+Métrica inteligente: Cálculo automatizado del consumo real de combustible en base a la diferencia de kilómetros entre repostajes consecutivos.
 
-Filtros por período para controlar el impacto económico de tus trayectos.
+Historial dinámico: Panel visual con histórico de operaciones totalmente filtrable por mes y año.
+
+📊 Módulo de Estadísticas
+Analítica gráfica: Gráficos interactivos que reflejan la evolución del gasto mensual y el histórico del consumo real.
+
+Filtros temporales: Segmentación por períodos de tiempo para evaluar el impacto económico de tus trayectos cotidianos o comerciales.
 
 🗺️ Mapa de gasolineras (Opcional)
-Consulta de precios y localización de estaciones de servicio vía API oficial del Geoportal de Gasolineras.
+Consulta de precios: Localización de estaciones de servicio vía API oficial del Geoportal de Gasolineras.
 
-Búsqueda predictiva por localidad.
+Búsqueda predictiva: Filtrado dinámico por localidad para encontrar los combustibles más económicos.
 
 📱 Evolución prevista
 Gracias a la implementación de FastAPI en el núcleo de la estructura, la lógica de negocio ya está completamente desacoplada de la interfaz gráfica, lo que permitirá su adaptación inmediata a:

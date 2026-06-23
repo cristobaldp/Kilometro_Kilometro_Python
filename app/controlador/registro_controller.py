@@ -92,7 +92,7 @@ class RegistroController:
         if not usuario:
             return self._error("El usuario ya existe")
 
-        # ✅ MESSAGEBOX CON ESTILO
+        #  MESSAGEBOX CON ESTILO
         msg = QMessageBox(self.widget)
         msg.setWindowTitle("Registro completado")
         msg.setText(
